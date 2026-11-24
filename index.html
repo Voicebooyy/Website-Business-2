@@ -300,7 +300,7 @@
     <form class="c-form" novalidate>
       <p class="demo-label">Polywerk</p>
       <h2 id="c-title">Ihre eigene <em>Website</em></h2>
-      <p class="muted">Schreiben Sie mir kurz – ich melde mich schnell bei Ihnen.</p>
+      <p class="muted">Schreiben Sie uns kurz – wir melden uns schnell bei Ihnen.</p>
       <label>Ihr Name<input name="name" autocomplete="name" required></label>
       <label>Ihr Café<input name="cafe" autocomplete="organization" required></label>
       <label>Telefon oder E-Mail<input name="kontakt" autocomplete="email" required></label>
@@ -313,7 +313,7 @@
     <div class="c-done" hidden>
       <p class="demo-label">Danke!</p>
       <h2>Nachricht ist <em>angekommen</em></h2>
-      <p class="muted">Ich melde mich bald bei Ihnen.</p>
+      <p class="muted">Wir melden uns bald bei Ihnen.</p>
       <button class="btn" type="button" data-close>Schließen</button>
     </div>
   </div>
@@ -653,7 +653,7 @@
     if (cafe) demo.querySelector('.demo-text').textContent = 'So könnte die Website von ' + cafe + ' aussehen.';
     // Rückfall ohne JS-Formular (sehr alte Browser): fertige E-Mail an Polywerk
     var who = cafe || 'mein Café';
-    var body = 'Hallo,\r\n\r\nmir gefällt die Beispiel-Website. Ich interessiere mich für eine eigene Website für ' + who + '.\r\n\r\nSie erreichen mich unter: \r\n\r\nViele Grüße\r\n';
+    var body = 'Hallo Polywerk-Team,\r\n\r\nmir gefällt die Beispiel-Website. Ich interessiere mich für eine eigene Website für ' + who + '.\r\n\r\nSie erreichen mich unter: \r\n\r\nViele Grüße\r\n';
     demo.querySelector('.demo-cta').href = 'mailto:polywerk.business@gmail.com?subject=' + encodeURIComponent('Website für ' + who) + '&body=' + encodeURIComponent(body);
     demo.querySelector('.demo-x').addEventListener('click', function () { demo.hidden = true; });
 
