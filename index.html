@@ -196,6 +196,7 @@
   .demo-text { margin: 8px 24px 16px 0; font-family: var(--serif); font-size: 1.35rem; line-height: 1.15; }
   .demo-cta { width: 100%; padding: 13px 16px; font-size: .95rem; }
   .demo-cta .short { display: none; }
+  .demo-mail { margin-top: 10px; font-size: .8rem; color: var(--muted); text-align: center; user-select: all; }
   .demo-x { position: absolute; top: 8px; right: 8px; width: 36px; height: 36px; border: 0; border-radius: 50%; background: none; font-size: 1.4rem; line-height: 1; color: var(--muted); }
   .demo-x:hover { background: var(--soft); color: var(--text); }
   .toast { position: fixed; left: 50%; bottom: 24px; z-index: 40; width: max-content; max-width: min(440px, calc(100vw - 32px)); padding: 12px 18px; background: var(--text); color: var(--bg); border-radius: 14px; font-size: .95rem; text-align: center; opacity: 0; transform: translate(-50%, 12px); pointer-events: none; transition: opacity .2s, transform .25s var(--ease); }
@@ -228,7 +229,7 @@
     /* DEMO: auf Handy/Tablet als schmale Leiste ganz oben */
     .demo { position: relative; right: auto; top: auto; width: auto; display: flex; align-items: center; gap: 12px; padding: 10px 52px 10px 20px; background: var(--text); color: var(--bg); border: 0; border-radius: 0; box-shadow: none; }
     .demo-label { padding-right: 0; color: var(--bg); font-size: .85rem; font-weight: 500; letter-spacing: 0; text-transform: none; }
-    .demo-text { display: none; }
+    .demo-text, .demo-mail { display: none; }
     .demo-cta, .demo-cta:hover { width: auto; margin-left: auto; padding: 0; background: none; color: var(--bg); font-size: .85rem; font-weight: 600; text-decoration: underline; }
     .demo-cta .long { display: none; }
     .demo-cta .short { display: inline; }
@@ -271,7 +272,9 @@
 <aside class="demo" aria-label="Hinweis zu dieser Beispiel-Website">
   <p class="demo-label">Beispiel-Website von Polywerk</p>
   <p class="demo-text">So könnte die Website Ihres Cafés aussehen.</p>
-  <a class="btn demo-cta" href="mailto:polywerk.business@gmail.com?subject=Website-Anfrage"><span class="long">Unverbindlich anfragen</span><span class="short">Anfragen</span></a>
+  <a class="btn demo-cta" href="mailto:polywerk.business@gmail.com?subject=Website%20f%C3%BCr%20mein%20Caf%C3%A9"><span class="long">Kontakt aufnehmen</span><span class="short">Kontakt</span></a>
+  <!-- falls kein E-Mail-Programm eingerichtet ist (z. B. Gmail nur im Browser), kann man die Adresse abschreiben -->
+  <p class="demo-mail">oder direkt an polywerk.business@gmail.com</p>
   <button class="demo-x" type="button" aria-label="Hinweis schließen">×</button>
 </aside>
 <div class="toast" role="status" aria-live="polite"></div>
@@ -608,7 +611,10 @@
 
     var demo = document.querySelector('.demo');
     if (cafe) demo.querySelector('.demo-text').textContent = 'So könnte die Website von ' + cafe + ' aussehen.';
-    demo.querySelector('.demo-cta').href = 'mailto:polywerk.business@gmail.com?subject=' + encodeURIComponent('Website-Anfrage' + (cafe ? ' für ' + cafe : ''));
+    // Klick öffnet eine fertige E-Mail an Polywerk – der Café-Besitzer ergänzt nur noch seine Nummer
+    var who = cafe || 'mein Café';
+    var body = 'Hallo,\r\n\r\nmir gefällt die Beispiel-Website. Ich interessiere mich für eine eigene Website für ' + who + '.\r\n\r\nSie erreichen mich unter: \r\n\r\nViele Grüße\r\n';
+    demo.querySelector('.demo-cta').href = 'mailto:polywerk.business@gmail.com?subject=' + encodeURIComponent('Website für ' + who) + '&body=' + encodeURIComponent(body);
     demo.querySelector('.demo-x').addEventListener('click', function () { demo.hidden = true; });
 
     // Klick-Hinweise: Anrufen, E-Mail, Route usw. zeigen in der Demo, was sie auf der echten Website tun
