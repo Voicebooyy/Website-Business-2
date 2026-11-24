@@ -271,7 +271,7 @@
 <aside class="demo" aria-label="Hinweis zu dieser Beispiel-Website">
   <p class="demo-label">Beispiel-Website von Polywerk</p>
   <p class="demo-text">So könnte die Website Ihres Cafés aussehen.</p>
-  <a class="btn demo-cta" href="mailto:polywerk.business@gmail.com?subject=Kostenlose%20Vorschau"><span class="long">Kostenlose Vorschau anfragen</span><span class="short">Gratis-Vorschau</span></a>
+  <a class="btn demo-cta" href="mailto:polywerk.business@gmail.com?subject=Website-Anfrage"><span class="long">Unverbindlich anfragen</span><span class="short">Anfragen</span></a>
   <button class="demo-x" type="button" aria-label="Hinweis schließen">×</button>
 </aside>
 <div class="toast" role="status" aria-live="polite"></div>
@@ -608,7 +608,7 @@
 
     var demo = document.querySelector('.demo');
     if (cafe) demo.querySelector('.demo-text').textContent = 'So könnte die Website von ' + cafe + ' aussehen.';
-    demo.querySelector('.demo-cta').href = 'mailto:polywerk.business@gmail.com?subject=' + encodeURIComponent('Kostenlose Vorschau' + (cafe ? ' für ' + cafe : ''));
+    demo.querySelector('.demo-cta').href = 'mailto:polywerk.business@gmail.com?subject=' + encodeURIComponent('Website-Anfrage' + (cafe ? ' für ' + cafe : ''));
     demo.querySelector('.demo-x').addEventListener('click', function () { demo.hidden = true; });
 
     // Klick-Hinweise: Anrufen, E-Mail, Route usw. zeigen in der Demo, was sie auf der echten Website tun
