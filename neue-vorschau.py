@@ -41,7 +41,7 @@ def ersetze(text, paare):
 
 
 def ordner_name(name, vorhanden):
-    """Ordnername „colonial-cafe-a3f9c2“: die Zufallsendung macht die Adresse nicht erratbar.
+    """Ordnername „cafe-lindenblatt-a3f9c2“: die Zufallsendung macht die Adresse nicht erratbar.
     Gibt es für das Café schon einen Ordner, wird er wiederverwendet (kein Duplikat)."""
     for alt in vorhanden:
         if re.fullmatch(re.escape(slug(name)) + "-[0-9a-f]{6}", alt):
@@ -51,9 +51,9 @@ def ordner_name(name, vorhanden):
 
 assert slug("Café & Bistro Größe!") == "cafe-bistro-groesse"
 assert tel_link("03327 / 123 456") == "+493327123456"
-assert re.fullmatch("colonial-cafe-[0-9a-f]{6}", ordner_name("Colonial Café", []))
-assert ordner_name("Colonial Café", ["colonial-cafe-a3f9c2", "anderes-cafe-000000"]) == "colonial-cafe-a3f9c2"
-assert ordner_name("Colonial", ["colonial-cafe-a3f9c2"]) != "colonial-cafe-a3f9c2"
+assert re.fullmatch("cafe-lindenblatt-[0-9a-f]{6}", ordner_name("Café Lindenblatt", []))
+assert ordner_name("Café Lindenblatt", ["cafe-lindenblatt-a3f9c2", "anderes-cafe-000000"]) == "cafe-lindenblatt-a3f9c2"
+assert ordner_name("Lindenblatt", ["cafe-lindenblatt-a3f9c2"]) != "cafe-lindenblatt-a3f9c2"
 assert ersetze("+4912345678 · 12345", [("+4912345678", "+49331123456"), ("12345", "14542")]) == "+49331123456 · 14542"
 
 
@@ -86,7 +86,7 @@ def ersetzungen(d):
 
 def main():
     print("Neue Vorschau. Enter übernimmt den Vorschlag in [eckigen Klammern].\n")
-    name = frage("Name des Cafés (z. B. Colonial Café)")
+    name = frage("Name des Cafés (z. B. Café Lindenblatt)")
     if not name:
         sys.exit("Ohne Namen geht es nicht.")
     d = {

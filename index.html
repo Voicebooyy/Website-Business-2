@@ -635,7 +635,7 @@
 
   // ===== DEMO (bei echten Kunden-Websites löschen) =====
   (function () {
-    // Link-Personalisierung: …/?cafe=Colonial Café&ort=Werder ersetzt Name und Ort im sichtbaren Text
+    // Link-Personalisierung: …/?cafe=Café Lindenblatt&ort=Musterstadt ersetzt Name und Ort im sichtbaren Text
     var q = new URLSearchParams(location.search);
     function param(k) { return (q.get(k) || '').trim().slice(0, 40); }
     var cafe = param('cafe'), ort = param('ort');
