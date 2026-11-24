@@ -651,6 +651,11 @@
 
     var demo = document.querySelector('.demo');
     if (cafe) demo.querySelector('.demo-text').textContent = 'So könnte die Website von ' + cafe + ' aussehen.';
+    // „Route planen“ öffnet Google Maps; steht ein Café im Link, sucht Maps nach genau diesem Café
+    if (cafe) document.querySelectorAll('a[href*="maps.google."]').forEach(function (a) {
+      a.href = 'https://maps.google.com/?q=' + encodeURIComponent(cafe + (ort ? ' ' + ort : ''));
+    });
+
     // Rückfall ohne JS-Formular (sehr alte Browser): fertige E-Mail an Polywerk
     var who = cafe || 'mein Café';
     var body = 'Hallo Polywerk-Team,\r\n\r\nmir gefällt die Beispiel-Website. Ich interessiere mich für eine eigene Website für ' + who + '.\r\n\r\nSie erreichen mich unter: \r\n\r\nViele Grüße\r\n';
@@ -696,7 +701,6 @@
     var hints = [
       [/^tel:/, 'Auf Ihrer Website ruft dieser Knopf direkt bei Ihnen im Café an.'],
       [/^mailto:/, 'Hier schreiben Ihnen Ihre Gäste direkt eine E-Mail.'],
-      [/maps\.google\./, 'Öffnet Google Maps mit dem Weg zu Ihrem Café.'],
       [/g\.page\//, 'Führt Ihre Gäste direkt zur Google-Bewertung Ihres Cafés.'],
       [/instagram\.com/, 'Führt zu Ihrem Instagram-Profil.']
     ];
