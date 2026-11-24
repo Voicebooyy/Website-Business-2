@@ -14,7 +14,7 @@ Muster-Website für Cafés und ein Werkzeug, das daraus persönliche Vorschauen 
 python3 neue-vorschau.py
 ```
 
-Das Skript fragt Name, Ort, Adresse, Telefon und E-Mail ab und legt `vorschau/<name>/` an.
+Das Skript fragt Name, Ort, Adresse, Telefon und E-Mail ab und legt `vorschau/<name>-<zufall>/` an (die Zufallsendung macht die Adresse nicht erratbar; ein erneuter Aufruf für dasselbe Café nutzt den vorhandenen Ordner).
 Öffnungszeiten, Speisekarte und Fotos danach in `vorschau/<name>/index.html` anpassen.
 
 ## Aus der Demo eine echte Kunden-Website machen

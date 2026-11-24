@@ -8,6 +8,7 @@ Das Skript fragt Name, Ort, Adresse usw. ab und legt den Ordner vorschau/<name>/
 """
 import html
 import re
+import secrets
 import sys
 from pathlib import Path
 from urllib.parse import quote, quote_plus
@@ -15,6 +16,7 @@ from urllib.parse import quote, quote_plus
 HIER = Path(__file__).resolve().parent
 SEITEN = ["index.html", "impressum.html", "datenschutz.html"]
 LINK = "https://voicebooyy.github.io/Website-Business-2/vorschau/{}/"
+VORSCHAU = HIER / "vorschau"
 
 
 def slug(text):
@@ -38,8 +40,20 @@ def ersetze(text, paare):
     return re.sub("|".join(re.escape(alt) for alt, _ in paare), lambda m: tabelle[m.group(0)], text)
 
 
+def ordner_name(name, vorhanden):
+    """Ordnername „colonial-cafe-a3f9c2“: die Zufallsendung macht die Adresse nicht erratbar.
+    Gibt es für das Café schon einen Ordner, wird er wiederverwendet (kein Duplikat)."""
+    for alt in vorhanden:
+        if re.fullmatch(re.escape(slug(name)) + "-[0-9a-f]{6}", alt):
+            return alt
+    return f"{slug(name)}-{secrets.token_hex(3)}"
+
+
 assert slug("Café & Bistro Größe!") == "cafe-bistro-groesse"
 assert tel_link("03327 / 123 456") == "+493327123456"
+assert re.fullmatch("colonial-cafe-[0-9a-f]{6}", ordner_name("Colonial Café", []))
+assert ordner_name("Colonial Café", ["colonial-cafe-a3f9c2", "anderes-cafe-000000"]) == "colonial-cafe-a3f9c2"
+assert ordner_name("Colonial", ["colonial-cafe-a3f9c2"]) != "colonial-cafe-a3f9c2"
 assert ersetze("+4912345678 · 12345", [("+4912345678", "+49331123456"), ("12345", "14542")]) == "+49331123456 · 14542"
 
 
@@ -86,14 +100,16 @@ def main():
     d["email"] = frage("E-Mail", f"info@{slug(name).replace('-', '')}.de")
     d["inhaber"] = frage("Inhaber, z. B. Max Mustermann (leer = Beispielnamen)")
 
-    ziel = HIER / "vorschau" / slug(name)
+    vorhanden = [x.name for x in VORSCHAU.iterdir()] if VORSCHAU.is_dir() else []
+    ordner = ordner_name(name, vorhanden)
+    ziel = VORSCHAU / ordner
     ziel.mkdir(parents=True, exist_ok=True)
     for seite in SEITEN:
         text = (HIER / seite).read_text(encoding="utf-8")
         (ziel / seite).write_text(ersetze(text, ersetzungen(d)), encoding="utf-8")
 
-    print(f"\nFertig: vorschau/{slug(name)}/")
-    print("Link, sobald hochgeladen: " + LINK.format(slug(name)))
+    print(f"\nFertig: vorschau/{ordner}/")
+    print("Link, sobald hochgeladen: " + LINK.format(ordner))
 
 
 if __name__ == "__main__":
