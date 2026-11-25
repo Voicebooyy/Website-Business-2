@@ -649,12 +649,12 @@
       }).finally(function () { clearTimeout(timer); send.disabled = false; send.textContent = 'Absenden'; });
     });
 
-    // Klick-Hinweise: Anrufen, E-Mail, Route usw. zeigen in der Demo, was sie auf der echten Website tun
+    // Klick-Hinweise: Anrufen, E-Mail, Route, Instagram und Bewertung zeigen in der Demo „Hier könnte … stehen“ statt etwas Echtes zu öffnen
     var toast = document.querySelector('.toast'), timer;
     var hints = [
-      [/^tel:/, 'Auf Ihrer Website ruft dieser Knopf direkt bei Ihnen im Café an.'],
-      [/^mailto:/, 'Hier schreiben Ihnen Ihre Gäste direkt eine E-Mail.'],
-      [/g\.page\//, 'Führt Ihre Gäste direkt zur Google-Bewertung Ihres Cafés.'],
+      [/^tel:/, 'Hier könnte Ihre Telefonnummer stehen.'],
+      [/^mailto:/, 'Hier könnte Ihre E-Mail-Adresse stehen.'],
+      [/g\.page\//, 'Hier könnte Ihre Google-Bewertung stehen.'],
       [/maps\.google\./, 'Hier könnte der Weg zu Ihrem Café stehen.'],
       [/instagram\.com/, 'Hier könnte Ihr Instagram-Profil stehen.']
     ];
