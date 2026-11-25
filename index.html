@@ -148,12 +148,12 @@
   .dishes li small { grid-column: 1 / -1; color: var(--muted); font-size: .95rem; margin-top: 4px; }
   .tag { display: inline-block; font-family: var(--sans); font-style: normal; font-size: .78rem; font-weight: 600; color: var(--sage); background: var(--sage-soft); border-radius: 999px; padding: 3px 10px; margin-left: 10px; vertical-align: 3px; }
 
-  /* Bilder: Ausschnitte aus dem Café, versetzt wie in einem Magazin */
+  /* Bilder: drei Gerichte, versetzt wie in einem Magazin – bewusst nicht größer als nötig */
   .gallery-sec { padding-top: 0; }
-  .gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; align-items: start; }
-  .gallery figure:nth-child(2) { margin-top: 64px; }
+  .gallery { display: grid; grid-template-columns: repeat(3, minmax(0, 300px)); gap: 28px; justify-content: start; align-items: start; }
+  .gallery figure:nth-child(2) { margin-top: 48px; }
   .gallery .frame { overflow: hidden; border-radius: var(--radius); background: var(--soft); }
-  .gallery img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; transition: transform .9s var(--ease); }
+  .gallery img { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 62%; transition: transform .9s var(--ease); }
   .gallery figure:hover img { transform: scale(1.04); }
   .gallery figcaption { font-family: var(--serif); font-style: italic; font-size: 1.15rem; color: var(--muted); margin-top: 12px; }
 
@@ -269,7 +269,6 @@
     .tabs { margin: 0 -24px 32px; padding: 0 24px; }
     .gallery { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: min(66%, 270px); gap: 24px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: 24px; scrollbar-width: none; }
     .gallery figure { scroll-snap-align: start; }
-    .gallery img { aspect-ratio: 4 / 5; }
     .gallery figure:nth-child(2) { margin-top: 0; }
     .facts { margin-top: 48px; }
   }
@@ -396,9 +395,9 @@
 
 <section class="gallery-sec"><div class="wrap gallery" role="region" aria-label="Bilder aus dem Café" tabindex="0">
   <!-- ÄNDERN: 3 eigene Fotos + kurze Bildzeilen. Tipp: eins mit den Menschen hinter der Theke – das schafft am meisten Vertrauen -->
-  <figure><div class="frame"><img src="bilder/galerie-1.webp" width="600" height="800" alt="Theke mit Espressomaschine, Kaffeemühlen und Tassen" loading="lazy"></div><figcaption>Die Theke am Morgen</figcaption></figure>
-  <figure><div class="frame"><img src="bilder/galerie-2.webp" width="600" height="800" alt="Holztisch mit Blumenvase und Bugholzstühlen" loading="lazy"></div><figcaption>Frische Blumen auf jedem Tisch</figcaption></figure>
-  <figure><div class="frame"><img src="bilder/galerie-3.webp" width="600" height="800" alt="Große Zimmerpflanze am Fenster im Sonnenlicht" loading="lazy"></div><figcaption>Viel Licht, viel Grün</figcaption></figure>
+  <figure><div class="frame"><img src="bilder/galerie-1.webp" width="634" height="956" alt="Cappuccino mit Latte-Art in weißer Tasse auf einem Holztisch" loading="lazy"></div><figcaption>Der erste Cappuccino des Tages</figcaption></figure>
+  <figure><div class="frame"><img src="bilder/galerie-2.webp" width="634" height="956" alt="Stück Schokoladentarte mit Gabel auf weißem Teller" loading="lazy"></div><figcaption>Schokoladentarte mit Kakao</figcaption></figure>
+  <figure><div class="frame"><img src="bilder/galerie-3.webp" width="634" height="956" alt="Avocado-Brot mit pochiertem Ei und Kresse neben einer Tasse Kaffee" loading="lazy"></div><figcaption>Avocado-Brot mit pochiertem Ei</figcaption></figure>
 </div></section>
 
 <section id="ueber-uns" class="soft"><div class="wrap about">
