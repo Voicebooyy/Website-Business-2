@@ -81,7 +81,7 @@ def ersetzungen(d):
         ("bilder/titelbild-", "../../bilder/titelbild-"),  # Titelbild (src und srcset)
     ]
     if d["inhaber"]:
-        liste += [("Anna Muster und Jonas Muster", e(d["inhaber"])), ("Anna & Jonas", e(d["inhaber"]))]
+        liste += [("Anna Muster und Jonas Muster", e(d["inhaber"])), ("Wir sind Anna und Jonas", "Wir sind " + e(d["inhaber"]))]
     return liste
 
 

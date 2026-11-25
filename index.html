@@ -158,13 +158,14 @@
   .story { max-width: 960px; }
   .story .big { font-family: var(--serif); font-size: clamp(2rem, 4.2vw, 3.4rem); line-height: 1.1; letter-spacing: -.01em; }
   .story .text { color: var(--muted); max-width: 560px; margin-top: 32px; font-size: 1.1rem; }
-  .sign { margin-top: 24px; font-family: var(--serif); font-style: italic; font-size: 1.6rem; }
 
   /* Besuch */
-  .visit { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-  .card { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); padding: 32px 28px; }
-  .card h3 { font-size: 1.8rem; margin-bottom: 18px; }
-  .card p + p { margin-top: 12px; }
+  .visit { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+  .card { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); padding: 40px 36px; }
+  .card h3 { font-size: 1.8rem; margin-bottom: 20px; }
+  .card p + p { margin-top: 14px; }
+  /* schmaler Desktop: Öffnungszeiten links über beide Zeilen, Adresse und Kontakt rechts untereinander */
+  @media (min-width: 1000px) and (max-width: 1299px) { .visit { grid-template-columns: 1fr 1fr; } .visit .card:first-child { grid-row: span 2; } }
   .hours { width: 100%; border-collapse: collapse; }
   .hours td { padding: 8px 0; border-bottom: 1px solid var(--line); }
   .hours tr:last-child td { border-bottom: 0; }
@@ -239,7 +240,8 @@
     body.bar .callbar { transform: none; }
     .callbar a { flex: 1; display: flex; justify-content: center; align-items: center; gap: 8px; padding: 16px; background: var(--text); color: var(--bg); font-weight: 500; text-decoration: none; }
     .callbar a + a { background: var(--paper); color: var(--text); }
-    .visit { grid-template-columns: 1fr; }
+    .visit { grid-template-columns: 1fr; gap: 24px; }
+    .card { padding: 32px 28px; }
     /* DEMO: auf Handy/Tablet als schmale Leiste ganz oben */
     .demo { position: relative; right: auto; top: auto; width: auto; display: flex; align-items: center; gap: 12px; padding: 10px 52px 10px 20px; background: var(--text); color: var(--bg); border: 0; border-radius: 0; box-shadow: none; }
     .demo .demo-label { padding-right: 0; color: var(--bg); font-size: .85rem; font-weight: 500; letter-spacing: 0; text-transform: none; }
@@ -269,8 +271,9 @@
     .dishes li span { font-size: 1.3rem; }
     /* Reiter und Bilder nebeneinander zum Wischen */
     .tabs { margin: 0 -24px 32px; padding: 0 24px; }
-    .gallery { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 78%; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+    .gallery { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: min(66%, 270px); gap: 24px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: 24px; scrollbar-width: none; }
     .gallery figure { scroll-snap-align: start; }
+    .gallery img { aspect-ratio: 4 / 5; }
     .gallery figure:nth-child(2) { margin-top: 0; }
   }
   /* Beim Ausdrucken alles zeigen, auch was noch nicht eingeblendet wurde */
@@ -412,16 +415,15 @@
 
 <section id="ueber-uns" class="soft"><div class="wrap story" data-reveal>
   <h2 class="kicker">Über uns</h2>
-  <!-- ÄNDERN: 2–3 Sätze vom Inhaber. Tipp: nach einem besonderen Moment oder Detail fragen, das nur dieses Café hat -->
-  <p class="big">Unser Mehl kommt aus der Mühle im Nachbarort, das Obst von <em>Höfen aus der Region.</em></p>
-  <p class="text">Am liebsten mögen wir den Moment am Morgen, wenn die Tür aufgeht und der erste Kuchen noch warm ist.</p>
-  <p class="sign">— Anna & Jonas</p>
+  <!-- ÄNDERN: wer ihr seid, seit wann, was euch ausmacht. Tipp: nach einem besonderen Detail fragen, das nur dieses Café hat -->
+  <p class="big">Wir sind Anna und Jonas – und seit 2012 backen wir jeden Morgen <em>frisch für dich.</em></p>
+  <p class="text">Unser Mehl kommt aus der Mühle im Nachbarort, das Obst von Höfen aus der Umgebung. Dazu gibt es guten Kaffee, Frühstück bis 14 Uhr und genug Zeit, um in Ruhe anzukommen.</p>
 </div></section>
 
 <section id="besuch"><div class="wrap">
   <div class="sec-head" data-reveal>
     <p class="kicker">Besuch</p>
-    <h2>Komm <em>vorbei</em></h2>
+    <h2>So findest du <em>uns</em></h2>
   </div>
   <div class="visit">
     <div class="card" data-reveal>
@@ -429,9 +431,9 @@
       <!-- ÄNDERN: Zeiten. data-days: 0 = So, 1 = Mo … 6 = Sa. Format „8:00 – 18:00“ beibehalten, sonst gilt der Tag als geschlossen.
            data-closed: zusätzliche Schließtage (Feiertage, Urlaub) als JJJJ-MM-TT, mit Leerzeichen getrennt -->
       <table class="hours" data-closed="2026-12-24 2026-12-25 2026-12-26">
-        <tr data-days="1"><td>Montag</td><td>Ruhetag</td></tr>
-        <tr data-days="2 3 4 5"><td>Dienstag – Freitag</td><td>8:00 – 18:00</td></tr>
-        <tr data-days="6 0"><td>Samstag & Sonntag</td><td>9:00 – 18:00</td></tr>
+        <tr data-days="1"><td>Mo</td><td>Ruhetag</td></tr>
+        <tr data-days="2 3 4 5"><td>Di – Fr</td><td>8:00 – 18:00</td></tr>
+        <tr data-days="6 0"><td>Sa & So</td><td>9:00 – 18:00</td></tr>
       </table>
     </div>
     <div class="card" data-reveal>
@@ -483,7 +485,7 @@
     <form class="c-form" novalidate>
       <p class="demo-label">Polywerk</p>
       <h2 id="c-title">Ihre eigene <em>Website</em></h2>
-      <p class="muted">Schreiben Sie uns kurz – wir melden uns schnell bei Ihnen.</p>
+      <p class="muted">Hinterlassen Sie uns Ihre Kontaktdaten, wir melden uns persönlich bei Ihnen.</p>
       <label>Ihr Name<input name="name" autocomplete="name" required></label>
       <label>Ihr Café<input name="cafe" autocomplete="organization" required></label>
       <label>Telefon oder E-Mail<input name="kontakt" autocomplete="email" required></label>
