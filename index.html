@@ -637,38 +637,10 @@
 
   // ===== DEMO (bei echten Kunden-Websites löschen) =====
   (function () {
-    // Link-Personalisierung: …/?cafe=Café Lindenblatt&ort=Musterstadt ersetzt Name und Ort im sichtbaren Text
-    var q = new URLSearchParams(location.search);
-    function param(k) { return (q.get(k) || '').trim().slice(0, 40); }
-    var cafe = param('cafe'), ort = param('ort');
-    if (cafe || ort) {
-      var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT), node;
-      while ((node = walker.nextNode())) {
-        if (node.parentNode.closest('script, .demo, .contact')) continue;
-        var v = node.nodeValue;
-        if (cafe) v = v.split('Café Lindenblatt').join(cafe);
-        if (ort) v = v.split('Musterstadt').join(ort);
-        node.nodeValue = v; // nur Text, kein HTML – Eingaben im Link können nichts einschleusen
-      }
-      if (cafe) document.title = document.title.replace('Café Lindenblatt', cafe);
-      if (ort) document.title = document.title.replace('Musterstadt', ort);
-    }
-
     var demo = document.querySelector('.demo');
-    if (cafe) { // Browser-Symbol: Anfangsbuchstabe des Cafés statt „L“
-      var icon = document.querySelector('link[rel=icon]');
-      icon.href = icon.href.replace('%3EL%3C/text', '%3E' + encodeURIComponent(Array.from(cafe)[0].toUpperCase()) + '%3C/text');
-    }
-    if (cafe) demo.querySelector('.demo-text').textContent = 'So könnte die Website von ' + cafe + ' aussehen.';
-    // „Route planen“ öffnet Google Maps; steht ein Café im Link, sucht Maps nach genau diesem Café
-    if (cafe) document.querySelectorAll('a[href*="maps.google."]').forEach(function (a) {
-      a.href = 'https://maps.google.com/?q=' + encodeURIComponent(cafe + (ort ? ' ' + ort : ''));
-    });
-
     // Rückfall ohne JS-Formular (sehr alte Browser): fertige E-Mail an Polywerk
-    var who = cafe || 'mein Café';
-    var body = 'Hallo Polywerk-Team,\r\n\r\nmir gefällt die Beispiel-Website. Ich interessiere mich für eine eigene Website für ' + who + '.\r\n\r\nSie erreichen mich unter: \r\n\r\nViele Grüße\r\n';
-    demo.querySelector('.demo-cta').href = 'mailto:polywerk.business@gmail.com?subject=' + encodeURIComponent('Website für ' + who) + '&body=' + encodeURIComponent(body);
+    var body = 'Hallo Polywerk-Team,\r\n\r\nmir gefällt die Beispiel-Website. Ich interessiere mich für eine eigene Website für mein Café.\r\n\r\nSie erreichen mich unter: \r\n\r\nViele Grüße\r\n';
+    demo.querySelector('.demo-cta').href = 'mailto:polywerk.business@gmail.com?subject=' + encodeURIComponent('Website für mein Café') + '&body=' + encodeURIComponent(body);
     demo.querySelector('.demo-x').addEventListener('click', function () { demo.hidden = true; });
 
     // „Kontakt aufnehmen“ öffnet das Formular; Absenden schickt es über FormSubmit an Polywerk
@@ -679,7 +651,6 @@
       demo.querySelector('.demo-cta').addEventListener('click', function (e) {
         e.preventDefault();
         err.hidden = true;
-        if (cafe && !field('cafe').value) field('cafe').value = cafe;
         dlg.showModal();
       });
     }

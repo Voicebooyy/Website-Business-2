@@ -2,11 +2,9 @@
 
 Muster-Website für Cafés und ein Werkzeug, das daraus persönliche Vorschauen macht.
 
-## Links (sobald GitHub Pages eingeschaltet ist)
+## Link
 
 - Demo: https://voicebooyy.github.io/Website-Business-2/
-- Mit dem Namen eines Cafés: https://voicebooyy.github.io/Website-Business-2/?cafe=Café%20Lindenblatt&ort=Musterstadt
-  (ersetzt Name und Ort im sichtbaren Text, Leerzeichen als `%20`)
 
 ## Persönliche Vorschau erstellen
 
