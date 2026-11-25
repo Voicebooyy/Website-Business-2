@@ -79,6 +79,7 @@ def ersetzungen(d):
         ('url("fonts/', 'url("../../fonts/'),  # die Vorschau liegt zwei Ordner tiefer
         ('href="fonts/', 'href="../../fonts/'),
         ("bilder/titelbild-", "../../bilder/titelbild-"),  # Titelbild (src und srcset)
+        ("bilder/galerie-", "../../bilder/galerie-"),  # Galerie-Bilder
     ]
     if d["inhaber"]:
         liste += [("Anna Muster und Jonas Muster", e(d["inhaber"])), ("Wir sind Anna und Jonas", "Wir sind " + e(d["inhaber"]))]
