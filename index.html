@@ -197,10 +197,10 @@
   .demo-x { position: absolute; top: 8px; right: 8px; width: 36px; height: 36px; border: 0; border-radius: 50%; background: none; font-size: 1.4rem; line-height: 1; color: var(--muted); }
   .demo-x:hover { background: var(--soft); color: var(--text); }
   .demo .demo-x { position: static; flex: none; }
-  .toast { position: fixed; left: 50%; bottom: 24px; z-index: 40; width: max-content; max-width: min(440px, calc(100vw - 32px)); padding: 12px 18px; background: var(--text); color: var(--bg); border-radius: 14px; font-size: .95rem; text-align: center; opacity: 0; transform: translate(-50%, 12px); pointer-events: none; transition: opacity .2s, transform .25s var(--ease); }
-  .toast.show { opacity: 1; transform: translate(-50%, 0); animation: toastIn .6s ease-out both; }
-  /* springt von unten auf, federt kurz nach */
-  @keyframes toastIn { 0% { opacity: 0; transform: translate(-50%, 22px) scale(.88); } 55% { opacity: 1; transform: translate(-50%, -6px) scale(1.04); } 80% { transform: translate(-50%, 1px) scale(.99); } 100% { opacity: 1; transform: translate(-50%, 0) scale(1); } }
+  .toast { position: fixed; left: 50%; bottom: 24px; z-index: 40; width: max-content; max-width: min(440px, calc(100vw - 32px)); padding: 12px 18px; background: var(--text); color: var(--bg); border-radius: 14px; font-size: .95rem; text-align: center; opacity: 0; transform: translate(-50%, 0) scale(.94); pointer-events: none; transition: opacity .2s, transform .25s var(--ease); }
+  .toast.show { opacity: 1; transform: translate(-50%, 0) scale(1); animation: toastIn .35s var(--ease) both; }
+  /* wird sauber von klein auf Normalgröße größer, ohne Nachfedern */
+  @keyframes toastIn { from { opacity: 0; transform: translate(-50%, 0) scale(.86); } to { opacity: 1; transform: translate(-50%, 0) scale(1); } }
   /* Kontakt-Formular (öffnet sich über „Kontakt aufnehmen“) */
   .contact { margin: auto; width: min(460px, calc(100vw - 32px)); max-height: calc(100vh - 32px); padding: 0; border: 0; border-radius: 24px; background: var(--paper); color: var(--text); box-shadow: 0 30px 80px rgba(42,29,21,.3); }
   .contact::backdrop { background: rgba(42,29,21,.5); }
