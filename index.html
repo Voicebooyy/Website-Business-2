@@ -175,8 +175,6 @@
   .hours tr.today td { font-weight: 600; color: var(--sage); }
   .hours tr.today td:first-child::after { content: "heute"; margin-left: 8px; font-size: .78rem; font-weight: 600; background: var(--sage-soft); border-radius: 999px; padding: 2px 9px; vertical-align: 2px; }
   .notice { margin-top: 18px; padding: 12px 16px; border-left: 3px solid var(--sage); background: var(--sage-soft); border-radius: 0 12px 12px 0; font-size: .95rem; }
-  .facts { margin-top: 64px; max-width: 640px; }
-  .facts span { margin-right: 10px; }
   @media (min-width: 1000px) and (max-width: 1299px) { .visit { grid-template-columns: 1fr 1fr; gap: 48px; } .visit .col:first-child { grid-row: span 2; } }
 
   /* Fußbereich: dunkel, mit großem Namen */
@@ -200,7 +198,9 @@
   .demo-x:hover { background: var(--soft); color: var(--text); }
   .demo .demo-x { position: static; flex: none; }
   .toast { position: fixed; left: 50%; bottom: 24px; z-index: 40; width: max-content; max-width: min(440px, calc(100vw - 32px)); padding: 12px 18px; background: var(--text); color: var(--bg); border-radius: 14px; font-size: .95rem; text-align: center; opacity: 0; transform: translate(-50%, 12px); pointer-events: none; transition: opacity .2s, transform .25s var(--ease); }
-  .toast.show { opacity: 1; transform: translate(-50%, 0); }
+  .toast.show { opacity: 1; transform: translate(-50%, 0); animation: toastIn .6s ease-out both; }
+  /* springt von unten auf, federt kurz nach */
+  @keyframes toastIn { 0% { opacity: 0; transform: translate(-50%, 22px) scale(.88); } 55% { opacity: 1; transform: translate(-50%, -6px) scale(1.04); } 80% { transform: translate(-50%, 1px) scale(.99); } 100% { opacity: 1; transform: translate(-50%, 0) scale(1); } }
   /* Kontakt-Formular (öffnet sich über „Kontakt aufnehmen“) */
   .contact { margin: auto; width: min(460px, calc(100vw - 32px)); max-height: calc(100vh - 32px); padding: 0; border: 0; border-radius: 24px; background: var(--paper); color: var(--text); box-shadow: 0 30px 80px rgba(42,29,21,.3); }
   .contact::backdrop { background: rgba(42,29,21,.5); }
@@ -270,7 +270,6 @@
     .gallery { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: min(66%, 270px); gap: 24px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: 24px; scrollbar-width: none; }
     .gallery figure { scroll-snap-align: start; }
     .gallery figure:nth-child(2) { margin-top: 0; }
-    .facts { margin-top: 48px; }
   }
   /* Beim Ausdrucken alles zeigen */
   @media print { .demo, .toast, .callbar, .rail, .sign { display: none; } }
@@ -279,6 +278,7 @@
     html { scroll-behavior: auto; }
     .rail li, .rail-cta, .hero-img, .sign, .js .panel.show { animation: none; opacity: 1; transform: none; }
     .rail a:not(.btn), .rail li::before, .callbar, .toast, .gallery img { transition: none; }
+    .toast.show { animation: none; }
     .gallery figure:hover img { transform: none; }
   }
 </style>
@@ -435,12 +435,10 @@
     <div class="col">
       <h3>Kontakt</h3>
       <p>Ihr seid eine größere Gruppe, wollt feiern oder Kuchen vorbestellen? Ruf kurz an oder schreib uns.</p>
-      <!-- ÄNDERN: Telefon, E-Mail, Instagram-Profil -->
-      <p><a href="tel:+4912345678">0123 / 45678</a><br><a href="mailto:hallo@muster-cafe.example">hallo@muster-cafe.example</a><br><a href="https://www.instagram.com/" target="_blank" rel="noopener">Instagram</a></p>
+      <!-- ÄNDERN: Telefon, E-Mail -->
+      <p><a href="tel:+4912345678">0123 / 45678</a><br><a href="mailto:hallo@muster-cafe.example">hallo@muster-cafe.example</a></p>
     </div>
   </div>
-  <!-- ÄNDERN: nur was für den Betrieb stimmt -->
-  <p class="facts"><span class="muted">Gut zu wissen:</span>Kartenzahlung, Hunde willkommen, Terrasse, WLAN und barrierefrei.</p>
 </div></section>
 </main>
 
@@ -448,7 +446,7 @@
   <p class="wordmark">Muster-Café</p>
   <div class="foot">
     <p>© Muster-Café, Musterstraße 12, 12345 Musterstadt</p>
-    <p class="foot-links"><a href="https://www.instagram.com/" target="_blank" rel="noopener">Instagram</a><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a><a href="mailto:polywerk.business@gmail.com">Website von Polywerk</a></p>
+    <p class="foot-links"><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a><a href="mailto:polywerk.business@gmail.com">Website von Polywerk</a></p>
   </div>
 </div></footer>
 
@@ -649,14 +647,13 @@
       }).finally(function () { clearTimeout(timer); send.disabled = false; send.textContent = 'Absenden'; });
     });
 
-    // Klick-Hinweise: Anrufen, E-Mail, Route, Instagram und Bewertung zeigen in der Demo „Hier könnte … stehen“ statt etwas Echtes zu öffnen
+    // Klick-Hinweise: Anrufen, E-Mail, Route und Bewertung zeigen in der Demo „Hier könnte … stehen“ statt etwas Echtes zu öffnen
     var toast = document.querySelector('.toast'), timer;
     var hints = [
       [/^tel:/, 'Hier könnte Ihre Telefonnummer stehen.'],
       [/^mailto:/, 'Hier könnte Ihre E-Mail-Adresse stehen.'],
       [/g\.page\//, 'Hier könnte Ihre Google-Bewertung stehen.'],
-      [/maps\.google\./, 'Hier könnte der Weg zu Ihrem Café stehen.'],
-      [/instagram\.com/, 'Hier könnte Ihr Instagram-Profil stehen.']
+      [/maps\.google\./, 'Hier könnte der Weg zu Ihrem Café stehen.']
     ];
     document.addEventListener('click', function (e) {
       var a = e.target.closest('a[href]');
@@ -665,6 +662,7 @@
         if (!hints[i][0].test(a.getAttribute('href'))) continue;
         e.preventDefault();
         toast.textContent = hints[i][1];
+        toast.classList.remove('show'); void toast.offsetWidth; // bei jedem Klick die Animation neu starten
         toast.classList.add('show');
         clearTimeout(timer);
         timer = setTimeout(function () { toast.classList.remove('show'); }, 3500);
