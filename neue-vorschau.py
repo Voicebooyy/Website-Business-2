@@ -41,7 +41,7 @@ def ersetze(text, paare):
 
 
 def ordner_name(name, vorhanden):
-    """Ordnername „cafe-lindenblatt-a3f9c2“: die Zufallsendung macht die Adresse nicht erratbar.
+    """Ordnername „muster-cafe-a3f9c2“: die Zufallsendung macht die Adresse nicht erratbar.
     Gibt es für das Café schon einen Ordner, wird er wiederverwendet (kein Duplikat)."""
     for alt in vorhanden:
         if re.fullmatch(re.escape(slug(name)) + "-[0-9a-f]{6}", alt):
@@ -51,9 +51,9 @@ def ordner_name(name, vorhanden):
 
 assert slug("Café & Bistro Größe!") == "cafe-bistro-groesse"
 assert tel_link("03327 / 123 456") == "+493327123456"
-assert re.fullmatch("cafe-lindenblatt-[0-9a-f]{6}", ordner_name("Café Lindenblatt", []))
-assert ordner_name("Café Lindenblatt", ["cafe-lindenblatt-a3f9c2", "anderes-cafe-000000"]) == "cafe-lindenblatt-a3f9c2"
-assert ordner_name("Lindenblatt", ["cafe-lindenblatt-a3f9c2"]) != "cafe-lindenblatt-a3f9c2"
+assert re.fullmatch("muster-cafe-[0-9a-f]{6}", ordner_name("Muster-Café", []))
+assert ordner_name("Muster-Café", ["muster-cafe-a3f9c2", "anderes-cafe-000000"]) == "muster-cafe-a3f9c2"
+assert ordner_name("Muster", ["muster-cafe-a3f9c2"]) != "muster-cafe-a3f9c2"
 assert ersetze("+4912345678 · 12345", [("+4912345678", "+49331123456"), ("12345", "14542")]) == "+49331123456 · 14542"
 
 
@@ -68,14 +68,14 @@ def ersetzungen(d):
     liste = [
         ("+4912345678", d["tel_link"]),
         ("0123 / 45678", e(d["tel"])),
-        ("Lindenstraße+12+Musterstadt", quote_plus(f'{d["strasse"]} {d["ort"]}')),
-        ("hallo@cafe-lindenblatt.de", e(d["email"])),
-        ("Lindenstraße 12", e(d["strasse"])),
+        ("Musterstraße+12+Musterstadt", quote_plus(f'{d["strasse"]} {d["ort"]}')),
+        ("hallo@muster-cafe.example", e(d["email"])),
+        ("Musterstraße 12", e(d["strasse"])),
         ("12345", e(d["plz"])),
-        ("Café Lindenblatt GbR", e(d["name"])),  # Rechtsform kennen wir nicht – im Impressum nur den Namen
-        ("Café Lindenblatt", e(d["name"])),
+        ("Muster-Café GbR", e(d["name"])),  # Rechtsform kennen wir nicht – im Impressum nur den Namen
+        ("Muster-Café", e(d["name"])),
         ("Musterstadt", e(d["ort"])),
-        ("%3EL%3C/text", "%3E" + quote(d["name"][:1].upper()) + "%3C/text"),  # Buchstabe im Browser-Tab
+        ("%3EM%3C/text", "%3E" + quote(d["name"][:1].upper()) + "%3C/text"),  # Buchstabe im Browser-Tab
         ('url("fonts/', 'url("../../fonts/'),  # die Vorschau liegt zwei Ordner tiefer
         ('href="fonts/', 'href="../../fonts/'),
         ("bilder/titelbild-", "../../bilder/titelbild-"),  # Titelbild (src und srcset)
@@ -88,14 +88,14 @@ def ersetzungen(d):
 
 def main():
     print("Neue Vorschau. Enter übernimmt den Vorschlag in [eckigen Klammern].\n")
-    name = frage("Name des Cafés (z. B. Café Lindenblatt)")
+    name = frage("Name des Cafés (z. B. Muster-Café)")
     if not name:
         sys.exit("Ohne Namen geht es nicht.")
     d = {
         "name": name,
         "ort": frage("Ort", "Musterstadt"),
         "plz": frage("PLZ", "12345"),
-        "strasse": frage("Straße und Hausnummer", "Lindenstraße 12"),
+        "strasse": frage("Straße und Hausnummer", "Musterstraße 12"),
     }
     tel = frage("Telefon (leer = Beispielnummer)")
     d["tel"], d["tel_link"] = (tel, tel_link(tel)) if tel else ("0123 / 45678", "+4912345678")
