@@ -78,6 +78,7 @@ def ersetzungen(d):
         ("%3EL%3C/text", "%3E" + quote(d["name"][:1].upper()) + "%3C/text"),  # Buchstabe im Browser-Tab
         ('url("fonts/', 'url("../../fonts/'),  # die Vorschau liegt zwei Ordner tiefer
         ('href="fonts/', 'href="../../fonts/'),
+        ("bilder/titelbild-", "../../bilder/titelbild-"),  # Titelbild (src und srcset)
     ]
     if d["inhaber"]:
         liste += [("Anna Muster und Jonas Muster", e(d["inhaber"])), ("Anna & Jonas", e(d["inhaber"]))]

@@ -14,7 +14,7 @@
 <meta property="og:locale" content="de_DE">
 <meta property="og:title" content="Café Lindenblatt – Frühstück & Kuchen in Musterstadt">
 <meta property="og:description" content="Frühstück bis 14 Uhr, jeden Morgen frisch gebackener Kuchen und richtig guter Kaffee.">
-<meta property="og:image" content="https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=1200&h=630&fit=crop&q=70">
+<meta property="og:image" content="https://voicebooyy.github.io/Website-Business-2/bilder/vorschau.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <!-- ÄNDERN: Anfangsbuchstabe des Betriebs -->
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232a1d15'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='20' fill='%23f6f1e9' text-anchor='middle'%3EL%3C/text%3E%3C/svg%3E">
@@ -109,7 +109,7 @@
   .hero { position: relative; display: flex; align-items: flex-end; min-height: max(560px, min(88vh, 860px)); overflow: hidden; border-bottom-left-radius: 32px; background: #6b4f3c; color: var(--bg); }
   .hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; animation: heroIn 1.8s var(--ease) both; }
   /* Verlauf von unten: Schrift bleibt auf jedem Foto lesbar */
-  .hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, rgba(30,20,13,.82) 0%, rgba(30,20,13,.45) 42%, rgba(30,20,13,.08) 78%); }
+  .hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, rgba(30,20,13,.86) 0%, rgba(30,20,13,.66) 38%, rgba(30,20,13,.36) 64%, rgba(30,20,13,.06) 90%); }
   .hero-content { position: relative; z-index: 1; width: 100%; max-width: 1200px; margin: 0 auto; padding: 56px 24px; display: grid; grid-template-columns: 1.55fr 1fr; gap: 48px; align-items: end; }
   .hero-content > * { animation: up .9s var(--ease) .25s both; }
   .hero-content > :last-child { animation-delay: .4s; }
@@ -257,6 +257,8 @@
   @media (max-width: 760px) {
     section { padding: 88px 0; }
     .hero-content { grid-template-columns: 1fr; gap: 16px; padding: 32px 24px 28px; }
+    /* Handy: Text nimmt mehr vom Bild ein, deshalb kräftigerer Verlauf */
+    .hero::after { background: linear-gradient(to top, rgba(30,20,13,.9) 0%, rgba(30,20,13,.82) 45%, rgba(30,20,13,.6) 72%, rgba(30,20,13,.3) 100%); }
     .hero h1 { font-size: 3.1rem; }
     .eyebrow { margin-bottom: 12px; }
     .lead { margin: 16px 0 0; }
@@ -311,11 +313,11 @@
 <main>
 <header class="hero" id="start">
   <!-- ÄNDERN: eigenes Foto des Betriebs (am besten hell und mit Tiefe – die Schrift steht unten links darauf) -->
-  <!-- srcset: der Browser lädt nur die Größe, die er braucht (Handy 800 px statt 2000 px) -->
-  <img class="hero-img" src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=1200&q=70"
-    srcset="https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=800&q=70 800w, https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=1200&q=70 1200w, https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=2000&q=70 2000w"
-    sizes="(min-width: 1000px) calc(100vw - 240px), 100vw"
-    alt="Gastraum des Café Lindenblatt" fetchpriority="high">
+  <!-- srcset: der Browser lädt nur die Größe, die er braucht (Handy 800 px statt 1440 px). Bilder liegen im Ordner „bilder“ -->
+  <img class="hero-img" src="bilder/titelbild-1200.webp"
+    srcset="bilder/titelbild-800.webp 800w, bilder/titelbild-1200.webp 1200w, bilder/titelbild-1440.webp 1440w"
+    sizes="(min-width: 1000px) calc(100vw - 240px), 100vw" width="1440" height="958"
+    alt="Heller Gastraum mit Holztischen, Pflanzen und Theke" fetchpriority="high">
   <div class="hero-content">
     <div>
       <p class="eyebrow">Café Lindenblatt · Musterstadt</p>
