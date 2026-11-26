@@ -258,5 +258,37 @@
   "rechtsform": "GbR",
   "inhaber": "vertreten durch Anna Muster und Jonas Muster",
   "ust_id": "DE000000000",
-  "polywerk_hinweis": true
+  "polywerk_hinweis": true,
+  "events": {
+    "titel": "Das ist bei uns los",
+    "eintraege": [
+      {
+        "datum": "2026-12-06",
+        "zeit": "10:00 – 14:00",
+        "titel": "Adventsbrunch",
+        "text": "Buffet mit selbst gebackenem Stollen, Rührei und Kaffee ohne Ende. Bitte bis zum 4. Dezember anmelden.",
+        "schild": "Anmeldung nötig"
+      },
+      {
+        "wochentag": 4,
+        "zeit": "18:30 – 21:00",
+        "titel": "Live-Musik am Donnerstag",
+        "text": "Akustik-Abend mit Musikerinnen und Musikern aus der Umgebung, dazu Wein und Käseplatte.",
+        "schild": "Eintritt frei"
+      },
+      {
+        "datum": "2026-12-13",
+        "zeit": "14:00 – 17:00",
+        "titel": "Backkurs: Zimtschnecken und Mürbeteig",
+        "text": "Anna zeigt ihre Rezepte, Zutaten und Schürze sind inklusive.",
+        "schild": "12 Plätze"
+      },
+      {
+        "datum": "2026-12-31",
+        "zeit": "9:00 – 13:00",
+        "titel": "Silvester-Frühstück",
+        "text": "Ein letztes Frühstück im alten Jahr, mit einem Glas Sekt zum Anstoßen."
+      }
+    ]
+  }
 }

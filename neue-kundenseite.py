@@ -23,6 +23,7 @@ import secrets
 import shutil
 import sys
 import zipfile
+from datetime import date
 from pathlib import Path
 from urllib.parse import quote, quote_plus
 
@@ -75,7 +76,7 @@ def kontrast(f1, f2):
 def filtere(text, behalte):
     """Entfernt die Blöcke <!--[NAME]-->…<!--[/NAME]--> (bzw. /*[NAME]*/…) für Marker, die NICHT in `behalte` sind;
     bei behaltenen Markern werden nur die Markierungszeilen entfernt."""
-    for name in ("PILLE", "DEMO"):
+    for name in ("PILLE", "DEMO", "EVENTS"):
         block = re.compile(
             r"^[ \t]*(?:<!--|/\*)\[%s\](?:-->|\*/)[ \t]*\n(.*?)^[ \t]*(?:<!--|/\*)\[/%s\](?:-->|\*/)[ \t]*\n" % (name, name),
             re.S | re.M)
@@ -261,6 +262,34 @@ def baue_oeffnungszeiten(c):
     return zeilen
 
 
+WOCHENTAGE = ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"]  # 0 = So … 6 = Sa
+MONATE = ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"]
+
+
+def baue_events(c):
+    """Optionaler Events-Bereich. Ohne Eintrag `events` in der Kundendatei gibt es ihn (samt Menüpunkt, Gestaltung, Skript) nicht."""
+    ev = c.get("events")
+    if not ev:
+        return ""
+    liste = ""
+    for e in ev["eintraege"]:
+        zeit = f", {t(e['zeit'])} Uhr" if e.get("zeit") else ""
+        schild = f'\n      <i class="tag">{t(e["schild"])}</i>' if e.get("schild") else ""
+        text = f'<p class="ev-text">{t(e["text"])}</p>' if e.get("text") else ""
+        if e.get("datum"):
+            d = date.fromisoformat(e["datum"])
+            wochentag = WOCHENTAGE[(d.weekday() + 1) % 7]
+            kopf = f'    <li data-date="{e["datum"]}">\n      <time class="ev-date" datetime="{e["datum"]}"><b>{d.day:02d}</b><span>{MONATE[d.month - 1]}</span></time>'
+            wann = f"{wochentag}{zeit}"
+        else:
+            wochentag = WOCHENTAGE[e["wochentag"]]
+            kopf = f'    <li>\n      <span class="ev-date"><b>{wochentag[:2]}</b><span>jeden</span></span>'
+            wann = f"Jeden {wochentag}{zeit}"
+        liste += f'{kopf}\n      <div><h3>{t(e["titel"])}</h3><p class="ev-when">{wann}</p>{text}</div>{schild}\n    </li>\n'
+    return (f'<section id="events"><div class="wrap">\n  <h2 class="head">{t(ev.get("titel", "Das ist bei uns los"))}</h2>\n'
+            f'  <ul class="events">\n{liste}  </ul>\n</div></section>\n')
+
+
 def baue_jsonld(c, telefon_link):
     d = {"@context": "https://schema.org", "@type": "CafeOrCoffeeShop", "name": c["name"], "telephone": telefon_link, "email": c["email"],
          "address": {"@type": "PostalAddress", "streetAddress": c["strasse"], "postalCode": c["plz"], "addressLocality": c["ort"], "addressCountry": "DE"},
@@ -281,6 +310,18 @@ def pruefe_daten(c, modus):
             raise SystemExit(f"Öffnungszeit „{z['tage']}“ ist leer.")
         if not all(isinstance(n, int) and 0 <= n <= 6 for n in z["tage_nr"]):
             raise SystemExit(f"tage_nr bei „{z['tage']}“ muss aus Zahlen 0 (So) bis 6 (Sa) bestehen.")
+    for e in (c.get("events") or {}).get("eintraege", []):
+        if not e.get("titel"):
+            raise SystemExit("Ein Event hat keinen Titel.")
+        if bool(e.get("datum")) == (e.get("wochentag") is not None):
+            raise SystemExit(f"Event „{e['titel']}“: entweder `datum` (JJJJ-MM-TT) ODER `wochentag` (0 = So … 6 = Sa) angeben.")
+        try:
+            if e.get("datum"):
+                date.fromisoformat(e["datum"])
+            elif not 0 <= e["wochentag"] <= 6:
+                raise ValueError
+        except ValueError:
+            raise SystemExit(f"Event „{e['titel']}“: ungültiges Datum oder ungültiger Wochentag.")
     if len(c["hero_woerter"]) > 4:
         raise SystemExit("hero_woerter: höchstens 4 Wörter – der erste Eindruck soll kurz bleiben.")
 
@@ -324,7 +365,7 @@ def durchlaufe(obj, pfad=""):
 
 # ---------------------------------------------------------------- Bauen
 def baue(c, modus, json_ordner, ausgabe):
-    behalte = {"demo": {"PILLE", "DEMO"}, "vorschau": {"PILLE"}, "fertig": set()}[modus]
+    behalte = {"demo": {"PILLE", "DEMO"}, "vorschau": {"PILLE"}, "fertig": set()}[modus] | ({"EVENTS"} if c.get("events") else set())
     meldungen = []
     info = verarbeite_fotos(c, json_ordner, ausgabe / "bilder" if modus != "demo" else HIER / "bilder", meldungen)
 
@@ -374,7 +415,7 @@ def baue(c, modus, json_ordner, ausgabe):
         "strasse": t(c["strasse"]), "plz": t(c["plz"]), "ort": t(c["ort"]), "telefon": t(c["telefon"]), "telefon_link": tl, "email": t(c["email"]),
         "maps_url": maps, "hero_bild": baue_hero_bild(c, info), "hero_h1": "<br>".join(t(w) + "." for w in c["hero_woerter"]),
         "karte_titel": t(c["karte"].get("titel", "Unsere Lieblinge")), "menu_html": karte_html, "karte_start_js": karte_js,
-        "galerie_sektion": baue_galerie(c, info), "ueber_aussage": t(c["ueber_uns"]["aussage"]), "ueber_text": t(c["ueber_uns"]["text"]),
+        "galerie_sektion": baue_galerie(c, info), "events_sektion": baue_events(c), "ueber_aussage": t(c["ueber_uns"]["aussage"]), "ueber_text": t(c["ueber_uns"]["text"]),
         "oeffnungszeilen": baue_oeffnungszeiten(c), "schliesstage": " ".join(c.get("schliesstage", [])),
         "hinweis_block": hinweis_html, "bewertung_block": bewertung_html,
         "kontakt_text": t(c.get("kontakt_text", "Fragen, Feiern oder Kuchen vorbestellen? Ruf kurz an oder schreib uns.")),
@@ -408,6 +449,9 @@ def selbsttest():
     gefiltert = filtere("a\n<!--[DEMO]-->\nb\n<!--[/DEMO]-->\n/*[PILLE]*/\nc\n/*[/PILLE]*/\nd\n", {"PILLE"})
     assert gefiltert == "a\nc\nd\n", repr(gefiltert)
     assert fuelle("x {{a}} y", {"a": "1"}) == "x 1 y"
+    assert filtere("a\n<!--[EVENTS]-->\nb\n<!--[/EVENTS]-->\nc\n", set()) == "a\nc\n"
+    ev = baue_events({"events": {"eintraege": [{"datum": "2026-12-06", "zeit": "10:00 – 14:00", "titel": "X"}, {"wochentag": 4, "titel": "Y"}]}})
+    assert "Sonntag, 10:00 – 14:00 Uhr" in ev and "Jeden Donnerstag" in ev and "<b>06</b><span>Dez</span>" in ev and "<b>Do</b>" in ev
 
 
 def main():

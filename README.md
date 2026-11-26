@@ -59,6 +59,7 @@ Titelbild: möglichst hell, ab 1600 px Breite, unten links ruhig (dort steht die
 | `inhaber`, `rechtsform`, `ust_id`, `hoster` | Für Impressum und Datenschutz (Vorlagen, bitte prüfen lassen). |
 | `webadresse` | Endgültige Adresse der Seite, nötig für die Bildvorschau beim Teilen. |
 | `farben` | Optional: eigene Farben (`bg`, `paper`, `soft`, `text`, `muted`, `line`, `akzent`, `akzent_hell`). Das Skript prüft die Lesbarkeit. |
+| `events` | **Optional.** Termine mit `titel`, `datum` (`JJJJ-MM-TT`) oder `wochentag` (0 = So … 6 = Sa, wiederkehrend), `zeit`, `text`, `schild`. Vergangene Termine verschwinden von selbst, sind alle weg, auch der Bereich samt Menüpunkt. **Eintrag `events` löschen und neu bauen = Bereich restlos weg** (Seite danach identisch zu vorher). |
 | `polywerk_hinweis` | `true` = „Website von Polywerk“ im Fußbereich. |
 
 Das Skript bricht bei fehlenden Pflichtfeldern mit einer verständlichen Meldung ab und **warnt**, wenn noch Beispielwerte (`Muster`, `[…]`, `.example` …) in der Datei stehen.
