@@ -197,7 +197,7 @@
   .demo-x { position: absolute; top: 8px; right: 8px; width: 36px; height: 36px; border: 0; border-radius: 50%; background: none; font-size: 1.4rem; line-height: 1; color: var(--muted); }
   .demo-x:hover { background: var(--soft); color: var(--text); }
   .demo .demo-x { position: static; flex: none; }
-  .toast { position: fixed; left: 50%; bottom: 24px; z-index: 40; width: max-content; max-width: min(440px, calc(100vw - 32px)); padding: 12px 18px; background: var(--text); color: var(--bg); border-radius: 14px; font-size: .95rem; text-align: center; opacity: 0; transform: translate(-50%, 0) scale(.94); pointer-events: none; transition: opacity .2s, transform .25s var(--ease); }
+  .toast { position: fixed; left: 50%; bottom: 24px; z-index: 40; width: max-content; max-width: min(440px, calc(100vw - 32px)); padding: 13px 20px; background: #120b07; color: var(--bg); border-radius: 14px; box-shadow: 0 0 0 1px rgba(246,241,233,.3), 0 14px 32px rgba(0,0,0,.35); font-size: .95rem; text-align: center; opacity: 0; transform: translate(-50%, 0) scale(.94); pointer-events: none; transition: opacity .2s, transform .25s var(--ease); }
   .toast.show { opacity: 1; transform: translate(-50%, 0) scale(1); animation: toastIn .35s var(--ease) both; }
   /* wird sauber von klein auf Normalgröße größer, ohne Nachfedern */
   @keyframes toastIn { from { opacity: 0; transform: translate(-50%, 0) scale(.86); } to { opacity: 1; transform: translate(-50%, 0) scale(1); } }
