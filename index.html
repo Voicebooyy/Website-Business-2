@@ -3,28 +3,23 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- ÄNDERN: Name + Ort (wichtig für Google) -->
-<title>Muster-Café – Frühstück & Kuchen in Musterstadt</title>
+<title>Muster-Café – Frühstück &amp; Kuchen in Musterstadt</title>
 <meta name="description" content="Muster-Café in Musterstadt: Frühstück bis 14 Uhr, jeden Morgen frisch gebackener Kuchen und richtig guter Kaffee.">
 <meta name="theme-color" content="#f6f1e9">
-<!-- Demo nicht bei Google zeigen. ÄNDERN: bei echten Kunden-Websites diese Zeile LÖSCHEN, sonst findet Google sie nicht -->
+<!-- Demo/Vorschau nicht bei Google zeigen -->
 <meta name="robots" content="noindex, nofollow">
-<!-- Vorschau, wenn der Link per WhatsApp/E-Mail geteilt wird. ÄNDERN: Text + eigenes Foto (absolute Adresse) -->
 <meta property="og:type" content="website">
 <meta property="og:locale" content="de_DE">
-<meta property="og:title" content="Muster-Café – Frühstück & Kuchen in Musterstadt">
+<meta property="og:title" content="Muster-Café – Frühstück &amp; Kuchen in Musterstadt">
 <meta property="og:description" content="Frühstück bis 14 Uhr, jeden Morgen frisch gebackener Kuchen und richtig guter Kaffee.">
 <meta property="og:image" content="https://voicebooyy.github.io/Website-Business-2/bilder/vorschau.jpg">
 <meta name="twitter:card" content="summary_large_image">
-<!-- ÄNDERN: Anfangsbuchstabe des Betriebs -->
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232a1d15'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='20' fill='%23f6f1e9' text-anchor='middle'%3EM%3C/text%3E%3C/svg%3E">
 <link rel="preload" href="fonts/instrument-sans.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
-<!-- Daten für Google (Name, Adresse, Telefon). ÄNDERN: wie oben. Die Öffnungszeiten trägt das Script unten aus der Tabelle ein -->
+<!-- Daten für Google (Name, Adresse, Telefon). Die Öffnungszeiten trägt das Script unten aus der Tabelle ein -->
 <script type="application/ld+json" id="ld">
-{"@context": "https://schema.org", "@type": "CafeOrCoffeeShop", "name": "Muster-Café", "telephone": "+4912345678", "email": "hallo@muster-cafe.example",
- "address": {"@type": "PostalAddress", "streetAddress": "Musterstraße 12", "postalCode": "12345", "addressLocality": "Musterstadt", "addressCountry": "DE"},
- "servesCuisine": "Frühstück, Kuchen, Kaffee", "openingHoursSpecification": []}
+{"@context": "https://schema.org", "@type": "CafeOrCoffeeShop", "name": "Muster-Café", "telephone": "+4912345678", "email": "hallo@muster-cafe.example", "address": {"@type": "PostalAddress", "streetAddress": "Musterstraße 12", "postalCode": "12345", "addressLocality": "Musterstadt", "addressCountry": "DE"}, "servesCuisine": "Frühstück, Kuchen, Kaffee", "openingHoursSpecification": []}
 </script>
 <!-- Merkt sich früh, dass JavaScript läuft: erst dann werden Einblend-Effekte und Reiter aktiv (ohne JS ist alles sichtbar) -->
 <script>document.documentElement.classList.add('js');</script>
@@ -34,7 +29,7 @@
   @font-face { font-family: "Instrument Serif"; src: url("fonts/instrument-serif.woff2") format("woff2"); font-display: swap; }
   @font-face { font-family: "Instrument Serif"; src: url("fonts/instrument-serif-italic.woff2") format("woff2"); font-style: italic; font-display: swap; }
 
-  /* ÄNDERN: Farben passend zum Betrieb */
+  /* Farben: in der Kundendatei unter „farben“ änderbar */
   :root {
     --bg: #f6f1e9;       /* Creme */
     --paper: #fbf7f1;    /* hellere Flächen */
@@ -187,8 +182,7 @@
   /* Handy: schwebende Leiste mit Anruf + Route – erscheint, sobald die Knöpfe oben aus dem Bild sind */
   .callbar { display: none; }
 
-  /* ===== DEMO: Hinweis für Café-Besitzer + Klick-Hinweise + Kontakt-Formular.
-     Bei echten Kunden-Websites diesen CSS-Block, <aside class="demo">, <div class="toast">, <dialog class="contact"> und das DEMO-Script löschen ===== */
+  /* Hinweis-Pille „Beispiel-Website von Polywerk“ + Kontakt-Fenster: nur in Demo und Vorschau, nicht auf fertigen Kunden-Seiten */
   .demo { position: fixed; right: 24px; bottom: 24px; z-index: 30; display: flex; align-items: center; gap: 14px; padding: 8px 8px 8px 22px; background: var(--paper); border: 1px solid var(--line); border-radius: 999px; box-shadow: 0 14px 36px rgba(42,29,21,.16); }
   .demo-label { font-size: .85rem; font-weight: 600; color: var(--sage); }
   .demo .demo-label { font-size: .92rem; font-weight: 500; color: var(--text); }
@@ -216,7 +210,6 @@
   .c-send:disabled { opacity: .6; cursor: default; }
   .c-legal { margin-top: 12px; font-size: .78rem; color: var(--muted); }
   .c-done .btn { margin-top: 24px; }
-  /* ===== Ende DEMO ===== */
 
   @media (min-width: 1000px) {
     .hero, footer { margin-left: var(--side); }
@@ -242,7 +235,7 @@
     .about, .visit { grid-template-columns: 1fr; }
     .about { gap: 24px; }
     .visit { gap: 40px; }
-    /* DEMO: auf Handy/Tablet als schmale Leiste ganz oben */
+    /* auf Handy/Tablet als schmale Leiste ganz oben */
     .demo { position: relative; right: auto; bottom: auto; width: auto; display: flex; align-items: center; gap: 12px; padding: 10px 52px 10px 20px; background: var(--text); color: var(--bg); border: 0; border-radius: 0; box-shadow: none; }
     .demo .demo-label { color: var(--bg); font-size: .85rem; }
     .demo-cta, .demo-cta:hover { width: auto; margin-left: auto; padding: 0; background: none; color: var(--bg); font-size: .85rem; font-weight: 600; text-decoration: underline; }
@@ -285,7 +278,6 @@
 </head>
 <body>
 
-<!-- ===== DEMO: Hinweis für Café-Besitzer (bei echten Kunden-Websites löschen) ===== -->
 <aside class="demo" aria-label="Hinweis zu dieser Beispiel-Website">
   <p class="demo-label">Beispiel-Website von Polywerk</p>
   <a class="btn demo-cta" href="mailto:polywerk.business@gmail.com?subject=Website%20f%C3%BCr%20mein%20Caf%C3%A9"><span class="long">Kontakt aufnehmen</span><span class="short">Kontakt</span></a>
@@ -303,14 +295,12 @@
       <li><a href="#ueber-uns">Über uns</a></li>
       <li><a href="#besuch">Besuch</a></li>
     </ul>
-    <a class="btn rail-cta" href="https://maps.google.com/?q=Musterstraße+12+Musterstadt" target="_blank" rel="noopener">Route planen</a>
+    <a class="btn rail-cta" href="https://maps.google.com/?q=Musterstra%C3%9Fe+12+Musterstadt" target="_blank" rel="noopener">Route planen</a>
   </nav>
 </header>
 
 <main>
 <header class="hero" id="start">
-  <!-- ÄNDERN: eigenes Foto des Betriebs (am besten hell und mit Tiefe – die Schrift steht unten links darauf) -->
-  <!-- srcset: der Browser lädt nur die Größe, die er braucht (Handy 800 px statt 1440 px). Bilder liegen im Ordner „bilder“ -->
   <img class="hero-img" src="bilder/titelbild-1200.webp"
     srcset="bilder/titelbild-800.webp 800w, bilder/titelbild-1200.webp 1200w, bilder/titelbild-1440.webp 1440w"
     sizes="(min-width: 1000px) calc(100vw - 240px), 100vw" width="1440" height="958"
@@ -324,22 +314,20 @@
     <h1>Frühstück.<br>Kuchen.<br>Kaffee.</h1>
     <div class="actions">
       <a class="btn cream" href="#karte">Speisekarte</a>
-      <a class="btn ghost" href="https://maps.google.com/?q=Musterstraße+12+Musterstadt" target="_blank" rel="noopener">Route planen</a>
+      <a class="btn ghost" href="https://maps.google.com/?q=Musterstra%C3%9Fe+12+Musterstadt" target="_blank" rel="noopener">Route planen</a>
     </div>
   </div>
 </header>
 
 <section id="karte"><div class="wrap">
   <h2 class="head">Unsere Lieblinge</h2>
-  <!-- Reiter: der erste Knopf gehört zum ersten Block unten usw. Vor 14 Uhr öffnet „Frühstück“, danach „Kuchen“ -->
   <div class="tabs" role="tablist" aria-label="Teile der Speisekarte">
     <button type="button" role="tab" id="t-fruehstueck" aria-controls="p-fruehstueck">Frühstück</button>
     <button type="button" role="tab" id="t-mittags" aria-controls="p-mittags">Mittags</button>
     <button type="button" role="tab" id="t-kuchen" aria-controls="p-kuchen">Kuchen</button>
-    <button type="button" role="tab" id="t-heiss" aria-controls="p-heiss">Heißgetränke</button>
-    <button type="button" role="tab" id="t-kalt" aria-controls="p-kalt">Kaltgetränke</button>
+    <button type="button" role="tab" id="t-heissgetraenke" aria-controls="p-heissgetraenke">Heißgetränke</button>
+    <button type="button" role="tab" id="t-kaltgetraenke" aria-controls="p-kaltgetraenke">Kaltgetränke</button>
   </div>
-  <!-- ÄNDERN: Gerichte und Preise. Schilder (tag) z. B. „Beliebt“, „Vegan“, „Neu“ – oder weglassen -->
   <div class="panel" id="p-fruehstueck" role="tabpanel" aria-labelledby="t-fruehstueck">
     <h3 class="panel-title">Frühstück <small>bis 14 Uhr</small></h3>
     <ul class="dishes">
@@ -371,7 +359,7 @@
       <li><span>Kuchen der Woche</span><b>4,70 €</b><small>wechselt jede Woche – frag uns an der Theke</small></li>
     </ul>
   </div>
-  <div class="panel" id="p-heiss" role="tabpanel" aria-labelledby="t-heiss">
+  <div class="panel" id="p-heissgetraenke" role="tabpanel" aria-labelledby="t-heissgetraenke">
     <h3 class="panel-title">Heißgetränke</h3>
     <ul class="dishes">
       <li><span>Espresso</span><b>2,40 €</b><small>klein und kräftig</small></li>
@@ -382,7 +370,7 @@
       <li><span>Tee</span><b>3,20 €</b><small>Schwarz, Grün oder Kräuter</small></li>
     </ul>
   </div>
-  <div class="panel" id="p-kalt" role="tabpanel" aria-labelledby="t-kalt">
+  <div class="panel" id="p-kaltgetraenke" role="tabpanel" aria-labelledby="t-kaltgetraenke">
     <h3 class="panel-title">Kaltgetränke</h3>
     <ul class="dishes">
       <li><span>Limonade</span><b>4,20 €</b><small>selbst gemacht: Zitrone-Minze oder Holunder</small></li>
@@ -394,7 +382,6 @@
 </div></section>
 
 <section class="gallery-sec"><div class="wrap gallery" role="region" aria-label="Bilder aus dem Café" tabindex="0">
-  <!-- ÄNDERN: 3 eigene Fotos + kurze Bildzeilen. Tipp: eins mit den Menschen hinter der Theke – das schafft am meisten Vertrauen -->
   <figure><div class="frame"><img src="bilder/galerie-1.webp" width="634" height="956" alt="Cappuccino mit Latte-Art in weißer Tasse auf einem Holztisch" loading="lazy"></div><figcaption>Der erste Cappuccino des Tages</figcaption></figure>
   <figure><div class="frame"><img src="bilder/galerie-2.webp" width="634" height="956" alt="Stück Schokoladentarte mit Gabel auf weißem Teller" loading="lazy"></div><figcaption>Schokoladentarte mit Kakao</figcaption></figure>
   <figure><div class="frame"><img src="bilder/galerie-3.webp" width="634" height="956" alt="Avocado-Brot mit pochiertem Ei und Kresse neben einer Tasse Kaffee" loading="lazy"></div><figcaption>Avocado-Brot mit pochiertem Ei</figcaption></figure>
@@ -403,7 +390,6 @@
 <section id="ueber-uns" class="soft"><div class="wrap about">
   <h2>Über uns</h2>
   <div class="story">
-    <!-- ÄNDERN: wer ihr seid, seit wann, was euch ausmacht. Tipp: nach einem besonderen Detail fragen, das nur dieses Café hat -->
     <p class="big">Wir sind Anna und Jonas. Seit 2012 backen wir jeden Morgen frisch für dich.</p>
     <p class="text">Mehl aus der Mühle im Nachbarort, Obst von Höfen aus der Umgebung, dazu Frühstück bis 14 Uhr und genug Zeit, um in Ruhe anzukommen.</p>
   </div>
@@ -414,28 +400,26 @@
   <div class="visit">
     <div class="col">
       <h3>Öffnungszeiten</h3>
-      <!-- ÄNDERN: Zeiten. data-days: 0 = So, 1 = Mo … 6 = Sa. Format „8:00 – 18:00“ beibehalten, sonst gilt der Tag als geschlossen.
-           data-closed: zusätzliche Schließtage (Feiertage, Urlaub) als JJJJ-MM-TT, mit Leerzeichen getrennt -->
+      <!-- data-days: 0 = So, 1 = Mo … 6 = Sa. Format „8:00 – 18:00“, sonst gilt der Tag als geschlossen.
+           data-closed: zusätzliche Schließtage (Feiertage, Urlaub) als JJJJ-MM-TT -->
       <table class="hours" data-closed="2026-12-24 2026-12-25 2026-12-26">
         <tr data-days="1"><td>Mo</td><td>Ruhetag</td></tr>
         <tr data-days="2 3 4 5"><td>Di – Fr</td><td>8:00 – 18:00</td></tr>
-        <tr data-days="6 0"><td>Sa & So</td><td>9:00 – 18:00</td></tr>
+        <tr data-days="6 0"><td>Sa &amp; So</td><td>9:00 – 18:00</td></tr>
       </table>
-      <!-- ÄNDERN: kurzer Hinweis (Urlaub, Aktion). Verschwindet nach dem Datum in data-until von selbst – oder Zeile löschen -->
+      <!-- Kurzer Hinweis (Urlaub, Aktion): verschwindet nach dem Datum in data-until von selbst -->
       <p class="notice" data-until="2026-12-26">Vom 24. bis 26. Dezember haben wir geschlossen.</p>
     </div>
     <div class="col">
       <h3>Adresse</h3>
       <p>Musterstraße 12<br>12345 Musterstadt</p>
-      <!-- Links statt eingebetteter Karte: keine Cookies, kein Cookie-Banner nötig -->
-      <p><a href="https://maps.google.com/?q=Musterstraße+12+Musterstadt" target="_blank" rel="noopener">Route planen</a></p>
-      <!-- ÄNDERN: Bewertungs-Link aus dem Google-Unternehmensprofil („Mehr Rezensionen erhalten“) -->
+      <!-- Link statt eingebetteter Karte: keine Cookies, kein Cookie-Banner nötig -->
+      <p><a href="https://maps.google.com/?q=Musterstra%C3%9Fe+12+Musterstadt" target="_blank" rel="noopener">Route planen</a></p>
       <p><a href="https://g.page/r/DEIN-CODE/review" target="_blank" rel="noopener">Hat’s geschmeckt? Bewerte uns bei Google</a></p>
     </div>
     <div class="col">
       <h3>Kontakt</h3>
       <p>Ihr seid eine größere Gruppe, wollt feiern oder Kuchen vorbestellen? Ruf kurz an oder schreib uns.</p>
-      <!-- ÄNDERN: Telefon, E-Mail -->
       <p><a href="tel:+4912345678">0123 / 45678</a><br><a href="mailto:hallo@muster-cafe.example">hallo@muster-cafe.example</a></p>
     </div>
   </div>
@@ -452,7 +436,7 @@
 
 <nav class="callbar" aria-label="Schnellzugriff">
   <a href="tel:+4912345678"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>Anrufen</a>
-  <a href="https://maps.google.com/?q=Musterstraße+12+Musterstadt" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Route</a>
+  <a href="https://maps.google.com/?q=Musterstra%C3%9Fe+12+Musterstadt" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Route</a>
 </nav>
 
 <!-- Kontakt-Formular: schickt die Nachricht über FormSubmit an polywerk.business@gmail.com – funktioniert ohne E-Mail-Programm -->
@@ -533,7 +517,7 @@
     el.textContent = JSON.stringify(ld);
   })();
 
-  // ===== Speisekarte: Reiter (Pfeiltasten wechseln), vor 14 Uhr öffnet „Frühstück“, danach „Kuchen“ =====
+  // ===== Speisekarte: Reiter (Pfeiltasten wechseln); welcher Reiter zuerst offen ist, steht bei „select“ unten =====
   (function () {
     var tabs = [].slice.call(document.querySelectorAll('.tabs [role=tab]'));
     function select(tab, focus) {
@@ -606,7 +590,7 @@
     }).observe(actions);
   })();
 
-  // ===== DEMO (bei echten Kunden-Websites löschen) =====
+  // ===== Hinweis-Pille und Kontakt-Fenster (nur Demo/Vorschau) =====
   (function () {
     var demo = document.querySelector('.demo');
     // Rückfall ohne JS-Formular (sehr alte Browser): fertige E-Mail an Polywerk
@@ -647,7 +631,9 @@
       }).finally(function () { clearTimeout(timer); send.disabled = false; send.textContent = 'Absenden'; });
     });
 
-    // Klick-Hinweise: Anrufen, E-Mail, Route und Bewertung zeigen in der Demo „Hier könnte … stehen“ statt etwas Echtes zu öffnen
+  })();
+  // ===== Klick-Hinweise (nur Demo): Anrufen, E-Mail, Route und Bewertung zeigen „Hier könnte … stehen“ statt etwas Echtes zu öffnen =====
+  (function () {
     var toast = document.querySelector('.toast'), timer;
     var hints = [
       [/^tel:/, 'Hier könnte Ihre Telefonnummer stehen.'],

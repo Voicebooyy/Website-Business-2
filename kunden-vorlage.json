@@ -1,0 +1,44 @@
+{
+  "_hinweis": "Leere Vorlage für ein neues Café: Kopie anlegen (z. B. kunden/cafe-xyz.json) und alle Werte in [eckigen Klammern] ersetzen. Das Skript warnt, wenn noch Beispielwerte übrig sind.",
+  "name": "[Name des Cafés]",
+  "strasse": "[Straße und Hausnummer]",
+  "plz": "[PLZ]",
+  "ort": "[Ort]",
+  "telefon": "[Telefonnummer]",
+  "email": "[E-Mail-Adresse des Cafés]",
+  "webadresse": "[Adresse der fertigen Website, z. B. https://www.cafe-xyz.de/ – oder leer lassen]",
+  "titel_zusatz": "[kurz, z. B. Frühstück & Kuchen]",
+  "beschreibung": "[1 Satz für Google, z. B. Name in Ort: Frühstück bis 14 Uhr, selbst gebackener Kuchen und guter Kaffee.]",
+  "hero_woerter": ["[Wort 1]", "[Wort 2]", "[Wort 3]"],
+  "bilder": {
+    "ordner": "fotos",
+    "titelbild": {"datei": "[innen.jpg]", "alt": "[Beschreibung des Fotos, z. B. Heller Gastraum mit Holztischen]"},
+    "galerie": [
+      {"datei": "[foto1.jpg]", "alt": "[Beschreibung]", "unterschrift": "[kurze Bildzeile]"},
+      {"datei": "[foto2.jpg]", "alt": "[Beschreibung]", "unterschrift": "[kurze Bildzeile]"},
+      {"datei": "[foto3.jpg]", "alt": "[Beschreibung]", "unterschrift": "[kurze Bildzeile]"}
+    ]
+  },
+  "oeffnungszeiten": [
+    {"tage": "Mo – Fr", "tage_nr": [1, 2, 3, 4, 5], "zeiten": "[8:00 – 18:00]"},
+    {"tage": "Sa & So", "tage_nr": [6, 0], "zeiten": "[9:00 – 18:00]"}
+  ],
+  "schliesstage": [],
+  "hinweis": null,
+  "karte": {
+    "titel": "Unsere Lieblinge",
+    "kategorien": [
+      {"titel": "[Frühstück]", "zusatz": "[bis 14 Uhr – oder Zeile weglassen]", "gerichte": [
+        {"name": "[Gericht]", "preis": "[9,90 €]", "beschreibung": "[Zutaten]", "schild": "[Beliebt – oder Zeile weglassen]"}
+      ]}
+    ]
+  },
+  "ueber_uns": {"aussage": "[Ein Satz: wer ihr seid und was euch ausmacht]", "text": "[2 Sätze mit einem besonderen Detail]"},
+  "kontakt_text": "Fragen, Feiern oder Kuchen vorbestellen? Ruf kurz an oder schreib uns.",
+  "bewertungslink": "",
+  "rechtsform": "",
+  "inhaber": "[Inhaber: Vorname Nachname]",
+  "ust_id": "",
+  "hoster": "[Name des Webspace-Anbieters]",
+  "polywerk_hinweis": true
+}

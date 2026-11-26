@@ -1,24 +1,68 @@
-# Café-Demo von Polywerk
+# Café-Websites von Polywerk
 
-Muster-Website für Cafés und ein Werkzeug, das daraus persönliche Vorschauen macht.
-
-## Link
+Eine Vorlage, ein Skript, eine Kundendatei: Aus den Daten eines Cafés entsteht die komplette Website.
+Die Demo (`index.html` im Hauptordner) wird mit demselben Skript aus der Vorlage erzeugt. Es gibt also nur **eine** Vorlage, die gepflegt wird.
 
 - Demo: https://voicebooyy.github.io/Website-Business-2/
 
-## Persönliche Vorschau erstellen
+## Ordner
+
+| Was | Wofür |
+|---|---|
+| `vorlage/` | Die Vorlage (`index.html`, `impressum.html`, `datenschutz.html`, `uebergabe.txt`). **Nur hier ändern**, nie die erzeugten Seiten. |
+| `neue-kundenseite.py` | Das Skript, das aus Vorlage + Kundendatei die Seite baut. |
+| `kunden-beispiel.json` | Die Daten des Muster-Cafés (daraus entsteht die Demo). |
+| `kunden-vorlage.json` | Leere Kundendatei zum Kopieren. |
+| `vorschau/` | Vorschauen für Cafés (öffentlich, mit Zufallsendung im Ordnernamen). |
+| `ausgabe/` | Fertige Kunden-Seiten und ZIP-Dateien (wird nicht hochgeladen). |
+
+Kundendaten und Fotos der Cafés gehören **nicht** in dieses öffentliche Repo, sondern in das private (`Website-Business`).
+
+## Eine Seite bauen
 
 ```bash
-python3 neue-vorschau.py
+python3 neue-kundenseite.py pfad/zum-cafe.json --modus vorschau   # Vorschau zum Zeigen
+python3 neue-kundenseite.py pfad/zum-cafe.json --modus fertig     # verkaufsfertige Seite + ZIP
+python3 neue-kundenseite.py kunden-beispiel.json --modus demo     # die Demo neu bauen
 ```
 
-Das Skript fragt Name, Ort, Adresse, Telefon und E-Mail ab und legt `vorschau/<name>-<zufall>/` an (die Zufallsendung macht die Adresse nicht erratbar; ein erneuter Aufruf für dasselbe Café nutzt den vorhandenen Ordner).
-Öffnungszeiten, Speisekarte und Fotos danach in `vorschau/<name>/index.html` anpassen.
+| Modus | Hinweis-Pille + Kontakt-Fenster | „Hier könnte … stehen“ | Links | Google |
+|---|---|---|---|---|
+| `demo` | ja | ja | abgefangen | unsichtbar |
+| `vorschau` | ja | nein | echt | unsichtbar |
+| `fertig` | nein | nein | echt | sichtbar |
 
-## Aus der Demo eine echte Kunden-Website machen
+Die **fertige** Seite hat kein Formular: nur Telefon- und E-Mail-Links. Dadurch gibt es nichts zu betreiben und keinen Dienst, der später aktiviert werden müsste.
 
-1. Alles anpassen, was mit `ÄNDERN` markiert ist.
-2. Die DEMO-Teile löschen: den CSS-Block „DEMO“, `<aside class="demo">`, `<div class="toast">` und das DEMO-Script.
-3. Die Zeile `<meta name="robots" content="noindex, nofollow">` löschen, sonst findet Google die Seite nicht.
-4. Eigene Fotos in den Ordner legen und verlinken (statt Unsplash).
-5. Impressum und Datenschutz mit den echten Angaben füllen (z. B. mit einem Datenschutz-Generator).
+## Fotos
+
+Die Originale (JPG/PNG) liegen neben der Kundendatei im Ordner `fotos/` (oder wie unter `bilder.ordner` angegeben). Das Skript macht automatisch:
+
+- dunkle **Ränder von Screenshots abschneiden** (z. B. bei KI-Bildern), es meldet, was es abgeschnitten hat,
+- das Titelbild in drei Größen (800 / 1200 / 1440 px) und als Vorschaubild (1200 × 630) speichern,
+- die drei Galerie-Fotos auf 4:5 zuschneiden und verkleinern,
+- vor zu kleinen Fotos warnen.
+
+Titelbild: möglichst hell, ab 1600 px Breite, unten links ruhig (dort steht die Schrift). **Auf echten Café-Seiten nur echte Fotos des Cafés**, keine KI-Bilder von Speisen.
+
+## Wichtige Felder der Kundendatei
+
+| Feld | Bedeutung |
+|---|---|
+| `name`, `strasse`, `plz`, `ort`, `telefon`, `email` | Stammdaten, erscheinen überall (Seite, Impressum, Google-Daten). |
+| `hero_woerter` | 2 bis 4 Wörter für die große Überschrift („Frühstück. Kuchen. Kaffee.“). |
+| `oeffnungszeiten` | Zeilen mit `tage` (Anzeige), `tage_nr` (0 = So … 6 = Sa) und `zeiten` (Format `8:00 – 18:00` oder `Ruhetag`). Das Türschild „Geöffnet/Geschlossen“ richtet sich automatisch danach. |
+| `schliesstage`, `hinweis` | Feiertage/Urlaub (`JJJJ-MM-TT`); ein Hinweis verschwindet nach seinem Datum (`bis`) von selbst. |
+| `karte.kategorien` | Teile der Speisekarte mit Gerichten (`name`, `preis`, `beschreibung`, optional `schild`). `karte.start` bestimmt optional, welcher Reiter zu welcher Uhrzeit zuerst offen ist. |
+| `ueber_uns` | `aussage` (ein Satz) und `text`. |
+| `bewertungslink` | Link aus dem Google-Unternehmensprofil, leer lassen = Block entfällt. |
+| `inhaber`, `rechtsform`, `ust_id`, `hoster` | Für Impressum und Datenschutz (Vorlagen, bitte prüfen lassen). |
+| `webadresse` | Endgültige Adresse der Seite, nötig für die Bildvorschau beim Teilen. |
+| `farben` | Optional: eigene Farben (`bg`, `paper`, `soft`, `text`, `muted`, `line`, `akzent`, `akzent_hell`). Das Skript prüft die Lesbarkeit. |
+| `polywerk_hinweis` | `true` = „Website von Polywerk“ im Fußbereich. |
+
+Das Skript bricht bei fehlenden Pflichtfeldern mit einer verständlichen Meldung ab und **warnt**, wenn noch Beispielwerte (`Muster`, `[…]`, `.example` …) in der Datei stehen.
+
+## Übergabe an den Kunden
+
+`--modus fertig` erzeugt `ausgabe/<name>/` und `ausgabe/<name>.zip` (Dateien direkt im Zip-Stamm) mit einer `LIESMICH-UEBERGABE.txt`, die jeder Webspace-Support ohne Rückfrage umsetzen kann. Danach hat der Kunde alles, und es gibt nichts weiter zu betreiben.

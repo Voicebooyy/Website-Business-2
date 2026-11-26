@@ -1,0 +1,57 @@
+WEBSITE FÜR {{name}} – ANLEITUNG ZUM VERÖFFENTLICHEN
+====================================================
+
+Diese Anleitung ist so geschrieben, dass sie jeder Webspace-Support oder jede IT-Person
+ohne Rückfrage umsetzen kann. Sie können sie einfach weiterleiten.
+
+
+WAS SIE BEKOMMEN
+----------------
+Eine fertige Website aus ganz normalen Dateien (HTML, Bilder, Schriften).
+Sie brauchen dafür KEINE Datenbank, KEIN PHP und KEIN Baukasten-Abo.
+Sie läuft auf jedem gewöhnlichen Webspace.
+
+  index.html          die Startseite (muss ganz oben im Hauptordner liegen)
+  impressum.html      Impressum
+  datenschutz.html    Datenschutzerklärung
+  bilder/             alle Fotos
+  fonts/              die Schriften (liegen bewusst auf Ihrem eigenen Server)
+
+
+SO KOMMT DIE WEBSITE INS INTERNET
+---------------------------------
+Eine Website braucht zwei Dinge, die Sie bei einem Anbieter Ihrer Wahl mieten:
+
+  1. Webspace ("Hosting"):  ein Platz im Internet, auf dem die Dateien liegen.
+  2. Eine Domain:           die Adresse, z. B. www.ihr-cafe.de.
+
+Haben Sie schon eine Domain mit Webspace (zum Beispiel von einer älteren Website oder einer
+Firmen-E-Mail), brauchen Sie nichts Neues. Sonst buchen Sie bei einem Anbieter ein einfaches
+Paket aus Domain und Webspace; das gibt es meist schon für wenige Euro im Monat.
+
+Dann:
+
+  1. Alle Dateien aus diesem Ordner in den Hauptordner des Webspace hochladen.
+     Der Hauptordner heißt je nach Anbieter "public_html", "htdocs", "www" oder "html".
+     WICHTIG: index.html muss direkt dort liegen, nicht in einem Unterordner.
+  2. Hochladen geht über den Dateimanager im Kundenbereich des Anbieters oder per FTP.
+     Der Support des Anbieters hilft dabei gern.
+  3. Die Domain im Kundenbereich auf diesen Webspace zeigen lassen (meist schon voreingestellt).
+  4. Die Adresse im Browser öffnen und auf dem Handy testen.
+
+
+ÄNDERUNGEN SPÄTER
+-----------------
+Öffnungszeiten, Preise und Texte stehen lesbar in der Datei index.html. Wer sich mit
+Webseiten auskennt, ändert das in wenigen Minuten mit einem normalen Texteditor.
+Die Öffnungszeiten stehen nur an EINER Stelle (Tabelle unter "So findest du uns"); die Anzeige
+"Geöffnet / Geschlossen" oben auf der Seite richtet sich automatisch danach.
+Schließtage (Feiertage, Urlaub) stehen im Tabellen-Kopf bei data-closed (Format JJJJ-MM-TT).
+
+
+HINWEIS ZU IMPRESSUM UND DATENSCHUTZ
+------------------------------------
+Impressum und Datenschutzerklärung sind aus Ihren Angaben erstellte Vorlagen.
+Verantwortlich für die Richtigkeit der Inhalte ist der Betreiber der Website. Bitte lassen Sie
+die Texte einmal prüfen (zum Beispiel mit einem Generator für Impressum und Datenschutz).
+Die Angabe zum Webspace-Anbieter in der Datenschutzerklärung muss zu Ihrem Anbieter passen.

@@ -1,0 +1,262 @@
+{
+  "_hinweis": "Beispiel-Datei: Muster-Café. Für ein echtes Café eine Kopie anlegen und alle Werte ersetzen. Erklärung der Felder: siehe README.",
+  "name": "Muster-Café",
+  "strasse": "Musterstraße 12",
+  "plz": "12345",
+  "ort": "Musterstadt",
+  "telefon": "0123 / 45678",
+  "email": "hallo@muster-cafe.example",
+  "webadresse": "https://voicebooyy.github.io/Website-Business-2/",
+  "titel_zusatz": "Frühstück & Kuchen",
+  "beschreibung": "Muster-Café in Musterstadt: Frühstück bis 14 Uhr, jeden Morgen frisch gebackener Kuchen und richtig guter Kaffee.",
+  "og_beschreibung": "Frühstück bis 14 Uhr, jeden Morgen frisch gebackener Kuchen und richtig guter Kaffee.",
+  "hero_woerter": [
+    "Frühstück",
+    "Kuchen",
+    "Kaffee"
+  ],
+  "schlagworte": [
+    "Frühstück",
+    "Kuchen",
+    "Kaffee"
+  ],
+  "bilder": {
+    "verarbeitet": true,
+    "titelbild": {
+      "alt": "Heller Gastraum mit Holztischen, Pflanzen und Theke"
+    },
+    "galerie": [
+      {
+        "alt": "Cappuccino mit Latte-Art in weißer Tasse auf einem Holztisch",
+        "unterschrift": "Der erste Cappuccino des Tages"
+      },
+      {
+        "alt": "Stück Schokoladentarte mit Gabel auf weißem Teller",
+        "unterschrift": "Schokoladentarte mit Kakao"
+      },
+      {
+        "alt": "Avocado-Brot mit pochiertem Ei und Kresse neben einer Tasse Kaffee",
+        "unterschrift": "Avocado-Brot mit pochiertem Ei"
+      }
+    ]
+  },
+  "oeffnungszeiten": [
+    {
+      "tage": "Mo",
+      "tage_nr": [
+        1
+      ],
+      "zeiten": "Ruhetag"
+    },
+    {
+      "tage": "Di – Fr",
+      "tage_nr": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "zeiten": "8:00 – 18:00"
+    },
+    {
+      "tage": "Sa & So",
+      "tage_nr": [
+        6,
+        0
+      ],
+      "zeiten": "9:00 – 18:00"
+    }
+  ],
+  "schliesstage": [
+    "2026-12-24",
+    "2026-12-25",
+    "2026-12-26"
+  ],
+  "hinweis": {
+    "text": "Vom 24. bis 26. Dezember haben wir geschlossen.",
+    "bis": "2026-12-26"
+  },
+  "karte": {
+    "titel": "Unsere Lieblinge",
+    "start": {
+      "bis_uhr": 14,
+      "vorher": "Frühstück",
+      "danach": "Kuchen"
+    },
+    "kategorien": [
+      {
+        "titel": "Frühstück",
+        "zusatz": "bis 14 Uhr",
+        "gerichte": [
+          {
+            "name": "Großes Frühstück",
+            "preis": "12,90 €",
+            "beschreibung": "Brötchen, Käse, Aufschnitt, Ei, hausgemachte Marmelade",
+            "schild": "Beliebt"
+          },
+          {
+            "name": "Avocado-Brot",
+            "preis": "10,50 €",
+            "beschreibung": "Sauerteigbrot, pochiertes Ei, Kresse"
+          },
+          {
+            "name": "Porridge",
+            "preis": "7,90 €",
+            "beschreibung": "Hafer mit Hafermilch, Apfel, Zimt, geröstete Nüsse",
+            "schild": "Vegan"
+          },
+          {
+            "name": "Rührei",
+            "preis": "8,40 €",
+            "beschreibung": "drei Eier, Schnittlauch, Sauerteigbrot"
+          },
+          {
+            "name": "Granola-Bowl",
+            "preis": "7,50 €",
+            "beschreibung": "Joghurt, Beeren, Honig"
+          },
+          {
+            "name": "Croissant",
+            "preis": "3,90 €",
+            "beschreibung": "mit Butter und Marmelade"
+          }
+        ]
+      },
+      {
+        "titel": "Mittags",
+        "zusatz": "ab 12 Uhr",
+        "gerichte": [
+          {
+            "name": "Quiche des Tages",
+            "preis": "9,80 €",
+            "beschreibung": "mit kleinem Salat"
+          },
+          {
+            "name": "Tomatensuppe",
+            "preis": "6,90 €",
+            "beschreibung": "mit Sauerteigbrot",
+            "schild": "Vegan"
+          },
+          {
+            "name": "Salat der Saison",
+            "preis": "8,90 €",
+            "beschreibung": "mit Ziegenkäse oder Tofu"
+          },
+          {
+            "name": "Bauernbrot",
+            "preis": "7,50 €",
+            "beschreibung": "mit Käse oder Schinken, Gurke, Kresse"
+          }
+        ]
+      },
+      {
+        "titel": "Kuchen",
+        "zusatz": "jeden Morgen frisch",
+        "gerichte": [
+          {
+            "name": "Apfelstrudel",
+            "preis": "4,90 €",
+            "beschreibung": "warm, mit Vanillesoße"
+          },
+          {
+            "name": "Käsekuchen",
+            "preis": "4,50 €",
+            "beschreibung": "nach Omas Rezept",
+            "schild": "Beliebt"
+          },
+          {
+            "name": "Schokoladentarte",
+            "preis": "4,80 €",
+            "beschreibung": "mit Sahne"
+          },
+          {
+            "name": "Carrot Cake",
+            "preis": "4,60 €",
+            "beschreibung": "mit Walnüssen",
+            "schild": "Vegan"
+          },
+          {
+            "name": "Zimtschnecke",
+            "preis": "3,50 €",
+            "beschreibung": "noch warm aus dem Ofen"
+          },
+          {
+            "name": "Kuchen der Woche",
+            "preis": "4,70 €",
+            "beschreibung": "wechselt jede Woche – frag uns an der Theke"
+          }
+        ]
+      },
+      {
+        "titel": "Heißgetränke",
+        "gerichte": [
+          {
+            "name": "Espresso",
+            "preis": "2,40 €",
+            "beschreibung": "klein und kräftig"
+          },
+          {
+            "name": "Cappuccino",
+            "preis": "3,60 €",
+            "beschreibung": "auch mit Hafermilch"
+          },
+          {
+            "name": "Flat White",
+            "preis": "3,90 €",
+            "beschreibung": "doppelter Espresso, wenig Milchschaum"
+          },
+          {
+            "name": "Filterkaffee",
+            "preis": "2,90 €",
+            "beschreibung": "frisch aufgebrüht, Nachschenken inklusive"
+          },
+          {
+            "name": "Chai Latte",
+            "preis": "4,20 €",
+            "beschreibung": "mit Zimt und Kardamom"
+          },
+          {
+            "name": "Tee",
+            "preis": "3,20 €",
+            "beschreibung": "Schwarz, Grün oder Kräuter"
+          }
+        ]
+      },
+      {
+        "titel": "Kaltgetränke",
+        "gerichte": [
+          {
+            "name": "Limonade",
+            "preis": "4,20 €",
+            "beschreibung": "selbst gemacht: Zitrone-Minze oder Holunder"
+          },
+          {
+            "name": "Eiskaffee",
+            "preis": "4,50 €",
+            "beschreibung": "mit Vanilleeis und Sahne"
+          },
+          {
+            "name": "Apfelschorle",
+            "preis": "3,40 €",
+            "beschreibung": "0,4 l, Saft aus der Region"
+          },
+          {
+            "name": "Wasser",
+            "preis": "2,60 €",
+            "beschreibung": "0,5 l, still oder sprudelnd"
+          }
+        ]
+      }
+    ]
+  },
+  "ueber_uns": {
+    "aussage": "Wir sind Anna und Jonas. Seit 2012 backen wir jeden Morgen frisch für dich.",
+    "text": "Mehl aus der Mühle im Nachbarort, Obst von Höfen aus der Umgebung, dazu Frühstück bis 14 Uhr und genug Zeit, um in Ruhe anzukommen."
+  },
+  "kontakt_text": "Ihr seid eine größere Gruppe, wollt feiern oder Kuchen vorbestellen? Ruf kurz an oder schreib uns.",
+  "bewertungslink": "https://g.page/r/DEIN-CODE/review",
+  "rechtsform": "GbR",
+  "inhaber": "vertreten durch Anna Muster und Jonas Muster",
+  "ust_id": "DE000000000",
+  "polywerk_hinweis": true
+}

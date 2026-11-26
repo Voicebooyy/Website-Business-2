@@ -1,0 +1,609 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{seitentitel}}</title>
+<meta name="description" content="{{beschreibung}}">
+<meta name="theme-color" content="{{farbe_bg}}">
+{{robots_meta}}<meta property="og:type" content="website">
+<meta property="og:locale" content="de_DE">
+<meta property="og:title" content="{{seitentitel}}">
+<meta property="og:description" content="{{og_beschreibung}}">
+{{og_bild_meta}}<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='{{favicon_dunkel}}'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='20' fill='{{favicon_hell}}' text-anchor='middle'%3E{{favicon_buchstabe}}%3C/text%3E%3C/svg%3E">
+<link rel="preload" href="{{fonts}}instrument-sans.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="{{fonts}}instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
+<!-- Daten für Google (Name, Adresse, Telefon). Die Öffnungszeiten trägt das Script unten aus der Tabelle ein -->
+<script type="application/ld+json" id="ld">
+{{jsonld}}
+</script>
+<!-- Merkt sich früh, dass JavaScript läuft: erst dann werden Einblend-Effekte und Reiter aktiv (ohne JS ist alles sichtbar) -->
+<script>document.documentElement.classList.add('js');</script>
+<style>
+  /* Schriften liegen lokal auf dem Server: kein Google-Fonts-Abruf = kein DSGVO-Problem */
+  @font-face { font-family: "Instrument Sans"; src: url("{{fonts}}instrument-sans.woff2") format("woff2"); font-weight: 400 700; font-display: swap; }
+  @font-face { font-family: "Instrument Serif"; src: url("{{fonts}}instrument-serif.woff2") format("woff2"); font-display: swap; }
+  @font-face { font-family: "Instrument Serif"; src: url("{{fonts}}instrument-serif-italic.woff2") format("woff2"); font-style: italic; font-display: swap; }
+
+  /* Farben: in der Kundendatei unter „farben“ änderbar */
+  :root {
+    --bg: {{farbe_bg}};       /* Creme */
+    --paper: {{farbe_paper}};    /* hellere Flächen */
+    --soft: {{farbe_soft}};     /* dunklere Creme für Abschnitte */
+    --text: {{farbe_text}};     /* Espresso */
+    --muted: {{farbe_muted}};
+    --line: {{farbe_line}};
+    --sage: {{farbe_akzent}};     /* Salbei: offen, Schilder, Akzente */
+    --sage-soft: {{farbe_akzent_hell}};
+    --serif: "Instrument Serif", Georgia, serif;
+    --sans: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --radius: 24px;
+    --side: 240px;   /* linke Spalte bleibt auf großen Bildschirmen frei fürs Menü */
+    --rail-x: 40px;  /* Abstand von Menü + Name zum linken Fensterrand */
+    --ease: cubic-bezier(.2,.7,.2,1);
+    --spring: cubic-bezier(.34,1.56,.64,1);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  [hidden] { display: none !important; }
+  html { scroll-behavior: smooth; background: var(--bg); }
+  body { font-family: var(--sans); font-size: 1.0625rem; line-height: 1.6; background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; }
+  h1, h2, h3 { font-family: var(--serif); font-weight: 400; line-height: 1; letter-spacing: -.01em; }
+  h2 { font-size: clamp(2.6rem, 5.5vw, 4.5rem); }
+  a { color: inherit; text-underline-offset: 4px; }
+  a:focus-visible, button:focus-visible, [tabindex]:focus-visible { outline: 2px solid var(--text); outline-offset: 3px; border-radius: 6px; }
+  img { display: block; max-width: 100%; }
+  ul { list-style: none; }
+  button { font: inherit; color: inherit; cursor: pointer; }
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+  section { padding: 120px 0; scroll-margin-top: 68px; }
+  .muted { color: var(--muted); }
+  .head { margin-bottom: 48px; }
+
+  /* Name oben links + Seitenmenü */
+  .top { position: fixed; top: 0; left: var(--rail-x); width: calc(var(--side) - 56px); height: 72px; display: flex; align-items: center; z-index: 20; }
+  .brand { font-family: var(--serif); font-size: 1.45rem; line-height: 1.05; text-decoration: none; }
+  .rail { position: fixed; left: var(--rail-x); top: 50%; transform: translateY(-50%); z-index: 20; }
+  .rail ul { --p: 0; position: relative; display: flex; flex-direction: column; gap: 4px; padding-left: 28px; }
+  /* helle Linie + dunkle Linie, die sich beim Scrollen füllt */
+  .rail ul::before, .rail ul::after { content: ""; position: absolute; left: 0; top: 8px; bottom: 8px; width: 2px; border-radius: 2px; }
+  .rail ul::before { background: var(--line); }
+  .rail ul::after { background: var(--text); transform-origin: top; transform: scaleY(var(--p)); }
+  /* Menüpunkte gleiten beim Laden nacheinander rein */
+  .rail li, .rail-cta { opacity: 0; transform: translateX(-34px); animation: railIn .8s var(--ease) .3s forwards; }
+  .rail li { position: relative; }
+  .rail li:nth-child(2) { animation-delay: .39s; }
+  .rail li:nth-child(3) { animation-delay: .48s; }
+  .rail li:nth-child(4) { animation-delay: .57s; }
+  .rail-cta { animation-delay: .7s; margin-top: 24px; }
+  @keyframes railIn { to { opacity: 1; transform: none; } }
+  /* Punkt markiert den Abschnitt, der gerade zu sehen ist */
+  .rail li::before { content: ""; position: absolute; left: -32px; top: 50%; width: 10px; height: 10px; margin-top: -5px; border-radius: 50%; background: var(--text); transform: scale(0); transition: transform .5s var(--spring); }
+  .rail li:has(a[aria-current])::before { transform: scale(1); }
+  .rail a:not(.btn) { display: block; padding: 8px 0; font-size: 1.15rem; color: var(--muted); font-weight: 500; text-decoration: none; transition: color .25s, transform .5s var(--spring); }
+  .rail a:not(.btn):hover { color: var(--text); transform: translateX(6px); }
+  .rail a[aria-current] { color: var(--text); transform: translateX(10px); }
+  .rail .rail-btn { display: none; }
+
+  .btn { display: inline-flex; align-items: center; justify-content: center; border: 0; background: var(--text); color: var(--bg); padding: 14px 26px; border-radius: 999px; text-decoration: none; font-weight: 500; transition: background-color .2s, color .2s, box-shadow .2s; }
+  .btn:hover { background: #4a3528; }
+  .btn.small { padding: 9px 18px; font-size: .95rem; }
+  .btn.light { background: transparent; color: var(--text); box-shadow: inset 0 0 0 1.5px var(--line); }
+  .btn.light:hover { background: var(--soft); }
+  .btn.cream { background: var(--bg); color: var(--text); }
+  .btn.cream:hover { background: #fff; }
+  .btn.ghost { background: transparent; color: var(--bg); box-shadow: inset 0 0 0 1.5px rgba(246,241,233,.6); }
+  .btn.ghost:hover { background: rgba(246,241,233,.14); }
+
+  /* Startbereich: Foto, drei Wörter, zwei Knöpfe – und das Türschild */
+  .hero { position: relative; display: flex; align-items: flex-end; min-height: max(560px, min(88vh, 860px)); overflow: hidden; border-bottom-left-radius: 32px; background: #6b4f3c; color: var(--bg); }
+  .hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 40%; animation: heroIn 1.8s var(--ease) both; }
+  /* Verlauf von unten: Schrift bleibt auf jedem Foto lesbar */
+  .hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, rgba(30,20,13,.84) 0%, rgba(30,20,13,.58) 34%, rgba(30,20,13,.18) 64%, rgba(30,20,13,0) 86%); }
+  .hero-content { position: relative; z-index: 1; width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 24px 64px; }
+  .hero h1 { font-size: clamp(3.8rem, 9.5vw, 9rem); line-height: .9; letter-spacing: -.02em; }
+  .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 32px; }
+  @keyframes heroIn { from { transform: scale(1.06); } }
+
+  /* Türschild: zeigt live, ob geöffnet ist, und pendelt einmal beim Laden */
+  .sign { position: absolute; top: 0; right: clamp(24px, 6vw, 80px); z-index: 2; width: 156px; color: var(--text); text-decoration: none; transform-origin: 50% 0; animation: swing 2.8s var(--ease) .9s both; }
+  .sign svg { position: relative; display: block; width: 100%; height: 48px; }
+  .sign line { stroke: rgba(246,241,233,.85); stroke-width: 1.5; }
+  .board { position: relative; display: flex; flex-direction: column; align-items: center; gap: 4px; margin-top: -10px; padding: 26px 10px 18px; background: var(--paper); border-radius: 18px; text-align: center; box-shadow: 0 14px 28px rgba(0,0,0,.28); }
+  .board::before { content: ""; position: absolute; top: 9px; left: 50%; width: 10px; height: 10px; margin-left: -5px; border-radius: 50%; background: #6b4f3c; box-shadow: inset 0 1px 2px rgba(0,0,0,.4); }
+  .s1 { font-family: var(--serif); font-size: 1.6rem; line-height: 1; }
+  .s2 { font-size: .9rem; line-height: 1.3; color: var(--muted); }
+  .sign.open .s1 { color: var(--sage); }
+  .sign.closed .board { background: var(--text); color: var(--bg); }
+  .sign.closed .s2 { color: #c9b9a8; }
+  .sign:hover .board { box-shadow: 0 18px 34px rgba(0,0,0,.34); }
+  @keyframes swing { 0% { transform: rotate(0); } 16% { transform: rotate(7deg); } 36% { transform: rotate(-5deg); } 56% { transform: rotate(3deg); } 76% { transform: rotate(-1.5deg); } 100% { transform: rotate(0); } }
+
+  /* Speisekarte mit Reitern */
+  .tabs { display: none; gap: 8px; margin-bottom: 40px; overflow-x: auto; scrollbar-width: none; }
+  .js .tabs { display: flex; }
+  .tabs button { flex: none; border: 0; padding: 10px 20px; border-radius: 999px; background: transparent; color: var(--muted); font-weight: 500; box-shadow: inset 0 0 0 1.5px var(--line); transition: background-color .2s, color .2s, box-shadow .2s; }
+  .tabs button:hover { color: var(--text); box-shadow: inset 0 0 0 1.5px var(--text); }
+  .tabs button[aria-selected="true"] { background: var(--text); color: var(--bg); box-shadow: none; }
+  .panel + .panel { margin-top: 56px; }
+  .js .panel + .panel { margin-top: 0; }
+  .panel-title { font-size: 2rem; margin-bottom: 8px; }
+  .panel-title small { font-family: var(--sans); font-size: .9rem; color: var(--muted); margin-left: 8px; }
+  /* mit JS übernehmen die Reiter die Überschrift – für Screenreader bleibt sie lesbar */
+  .js .panel-title { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .js .panel.show { animation: up .5s var(--ease) both; }
+  @keyframes up { from { opacity: 0; transform: translateY(20px); } }
+  .dishes { display: grid; grid-template-columns: 1fr 1fr; column-gap: 64px; }
+  .dishes li { display: grid; grid-template-columns: 1fr auto; column-gap: 16px; align-items: baseline; padding: 20px 0; border-bottom: 1px solid var(--line); }
+  .dishes li span { font-family: var(--serif); font-size: 1.45rem; line-height: 1.15; }
+  .dishes li b { font-weight: 500; font-variant-numeric: tabular-nums; }
+  .dishes li small { grid-column: 1 / -1; color: var(--muted); font-size: .95rem; margin-top: 4px; }
+  .tag { display: inline-block; font-family: var(--sans); font-style: normal; font-size: .78rem; font-weight: 600; color: var(--sage); background: var(--sage-soft); border-radius: 999px; padding: 3px 10px; margin-left: 10px; vertical-align: 3px; }
+
+  /* Bilder: drei Gerichte, versetzt wie in einem Magazin – bewusst nicht größer als nötig */
+  .gallery-sec { padding-top: 0; }
+  .gallery { display: grid; grid-template-columns: repeat(3, minmax(0, 300px)); gap: 28px; justify-content: start; align-items: start; }
+  .gallery figure:nth-child(2) { margin-top: 48px; }
+  .gallery .frame { overflow: hidden; border-radius: var(--radius); background: var(--soft); }
+  .gallery img { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 62%; transition: transform .9s var(--ease); }
+  .gallery figure:hover img { transform: scale(1.04); }
+  .gallery figcaption { font-family: var(--serif); font-style: italic; font-size: 1.15rem; color: var(--muted); margin-top: 12px; }
+
+  /* Über uns */
+  .soft { background: var(--soft); }
+  .about { display: grid; grid-template-columns: 1fr 2fr; gap: 48px; align-items: start; }
+  .story .big { font-family: var(--serif); font-size: clamp(2rem, 4.2vw, 3.4rem); line-height: 1.1; letter-spacing: -.01em; }
+  .story .text { color: var(--muted); max-width: 520px; margin-top: 32px; font-size: 1.1rem; }
+
+  /* Besuch: drei Spalten mit feiner Linie statt Karten */
+  .visit { display: grid; grid-template-columns: repeat(3, 1fr); gap: 64px; }
+  .col { border-top: 1px solid var(--text); padding-top: 24px; }
+  .col h3 { font-size: 1.8rem; margin-bottom: 20px; }
+  .col p + p { margin-top: 14px; }
+  .hours { width: 100%; border-collapse: collapse; }
+  .hours td { padding: 9px 0; border-bottom: 1px solid var(--line); }
+  .hours tr:last-child td { border-bottom: 0; }
+  .hours td + td { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .hours tr.today td { font-weight: 600; color: var(--sage); }
+  .hours tr.today td:first-child::after { content: "heute"; margin-left: 8px; font-size: .78rem; font-weight: 600; background: var(--sage-soft); border-radius: 999px; padding: 2px 9px; vertical-align: 2px; }
+  .notice { margin-top: 18px; padding: 12px 16px; border-left: 3px solid var(--sage); background: var(--sage-soft); border-radius: 0 12px 12px 0; font-size: .95rem; }
+  @media (min-width: 1000px) and (max-width: 1299px) { .visit { grid-template-columns: 1fr 1fr; gap: 48px; } .visit .col:first-child { grid-row: span 2; } }
+
+  /* Fußbereich: dunkel, mit großem Namen */
+  footer { background: var(--text); color: var(--bg); border-top-left-radius: 32px; padding: 96px 0 40px; }
+  .wordmark { font-family: var(--serif); font-size: clamp(3rem, 11vw, 10rem); line-height: .9; margin-bottom: 64px; overflow-wrap: anywhere; }
+  .foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; color: #c9b9a8; font-size: .92rem; }
+  .foot-links { display: flex; flex-wrap: wrap; gap: 8px 20px; }
+  footer a:focus-visible, .hero a:focus-visible { outline-color: var(--bg); }
+
+  /* Handy: schwebende Leiste mit Anruf + Route – erscheint, sobald die Knöpfe oben aus dem Bild sind */
+  .callbar { display: none; }
+
+  /*[PILLE]*/
+  /* Hinweis-Pille „Beispiel-Website von Polywerk“ + Kontakt-Fenster: nur in Demo und Vorschau, nicht auf fertigen Kunden-Seiten */
+  .demo { position: fixed; right: 24px; bottom: 24px; z-index: 30; display: flex; align-items: center; gap: 14px; padding: 8px 8px 8px 22px; background: var(--paper); border: 1px solid var(--line); border-radius: 999px; box-shadow: 0 14px 36px rgba(42,29,21,.16); }
+  .demo-label { font-size: .85rem; font-weight: 600; color: var(--sage); }
+  .demo .demo-label { font-size: .92rem; font-weight: 500; color: var(--text); }
+  .demo-cta { padding: 11px 20px; font-size: .92rem; }
+  .demo-cta .short { display: none; }
+  .demo-x { position: absolute; top: 8px; right: 8px; width: 36px; height: 36px; border: 0; border-radius: 50%; background: none; font-size: 1.4rem; line-height: 1; color: var(--muted); }
+  .demo-x:hover { background: var(--soft); color: var(--text); }
+  .demo .demo-x { position: static; flex: none; }
+  /*[/PILLE]*/
+  /*[DEMO]*/
+  .toast { position: fixed; left: 50%; bottom: 24px; z-index: 40; width: max-content; max-width: min(440px, calc(100vw - 32px)); padding: 13px 20px; background: #120b07; color: var(--bg); border-radius: 14px; box-shadow: 0 0 0 1px rgba(246,241,233,.3), 0 14px 32px rgba(0,0,0,.35); font-size: .95rem; text-align: center; opacity: 0; transform: translate(-50%, 0) scale(.94); pointer-events: none; transition: opacity .2s, transform .25s var(--ease); }
+  .toast.show { opacity: 1; transform: translate(-50%, 0) scale(1); animation: toastIn .35s var(--ease) both; }
+  /* wird sauber von klein auf Normalgröße größer, ohne Nachfedern */
+  @keyframes toastIn { from { opacity: 0; transform: translate(-50%, 0) scale(.86); } to { opacity: 1; transform: translate(-50%, 0) scale(1); } }
+  /*[/DEMO]*/
+  /*[PILLE]*/
+  /* Kontakt-Formular (öffnet sich über „Kontakt aufnehmen“) */
+  .contact { margin: auto; width: min(460px, calc(100vw - 32px)); max-height: calc(100vh - 32px); padding: 0; border: 0; border-radius: 24px; background: var(--paper); color: var(--text); box-shadow: 0 30px 80px rgba(42,29,21,.3); }
+  .contact::backdrop { background: rgba(42,29,21,.5); }
+  .c-inner { position: relative; padding: 32px; }
+  .contact h2 { font-size: 2.3rem; margin: 8px 0 8px; }
+  .c-form label { display: flex; flex-direction: column; gap: 6px; margin-top: 14px; font-size: .92rem; font-weight: 500; }
+  .c-form label small { font-weight: 400; color: var(--muted); }
+  .c-form input, .c-form textarea { width: 100%; font: inherit; font-size: 1rem; font-weight: 400; padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px; background: #fff; color: var(--text); resize: vertical; }
+  .c-form input:focus, .c-form textarea:focus { outline: 2px solid var(--text); outline-offset: 0; border-color: var(--text); }
+  .c-form .hp { position: absolute; left: -9999px; width: 1px; height: 1px; }
+  .c-err { margin-top: 14px; font-size: .92rem; font-weight: 500; color: #a3261b; }
+  .c-send { width: 100%; margin-top: 20px; }
+  .c-send:disabled { opacity: .6; cursor: default; }
+  .c-legal { margin-top: 12px; font-size: .78rem; color: var(--muted); }
+  .c-done .btn { margin-top: 24px; }
+  /*[/PILLE]*/
+
+  @media (min-width: 1000px) {
+    .hero, footer { margin-left: var(--side); }
+    section { padding-left: var(--side); }
+  }
+  @media (max-width: 999px) {
+    /* Tablet/Handy: Leiste oben mit Name + „Menü“-Knopf, Liste klappt auf */
+    .top { position: sticky; left: auto; width: auto; height: 64px; padding: 0 120px 0 20px; background: rgba(246,241,233,.92); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+    .brand { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 1.35rem; }
+    .rail { position: absolute; top: 12px; right: 16px; left: auto; transform: none; display: flex; flex-direction: column; align-items: flex-end; }
+    .rail .rail-btn { display: inline-flex; }
+    .rail ul { display: none; margin-top: 8px; min-width: 200px; padding: 10px 20px; background: var(--paper); border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 12px 32px rgba(42,29,21,.14); }
+    .rail ul::before, .rail ul::after, .rail li::before, .rail-cta { display: none; }
+    .rail.open ul { display: flex; }
+    .rail li { animation: none; opacity: 1; transform: none; }
+    .rail a[aria-current] { transform: none; }
+    .hero { border-radius: 0 0 28px 28px; min-height: max(520px, calc(100svh - 110px)); }
+    footer { border-radius: 28px 28px 0 0; padding-bottom: 110px; }
+    .callbar { display: flex; position: fixed; left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom)); z-index: 20; max-width: 480px; margin-inline: auto; border-radius: 16px; overflow: hidden; box-shadow: 0 8px 28px rgba(42,29,21,.25); transform: translateY(calc(100% + 24px)); transition: transform .3s var(--ease); }
+    body.bar .callbar { transform: none; }
+    .callbar a { flex: 1; display: flex; justify-content: center; align-items: center; gap: 8px; padding: 16px; background: var(--text); color: var(--bg); font-weight: 500; text-decoration: none; }
+    .callbar a + a { background: var(--paper); color: var(--text); }
+    .about, .visit { grid-template-columns: 1fr; }
+    .about { gap: 24px; }
+    .visit { gap: 40px; }
+    /*[PILLE]*/
+    /* auf Handy/Tablet als schmale Leiste ganz oben */
+    .demo { position: relative; right: auto; bottom: auto; width: auto; display: flex; align-items: center; gap: 12px; padding: 10px 52px 10px 20px; background: var(--text); color: var(--bg); border: 0; border-radius: 0; box-shadow: none; }
+    .demo .demo-label { color: var(--bg); font-size: .85rem; }
+    .demo-cta, .demo-cta:hover { width: auto; margin-left: auto; padding: 0; background: none; color: var(--bg); font-size: .85rem; font-weight: 600; text-decoration: underline; }
+    .demo-cta .long { display: none; }
+    .demo-cta .short { display: inline; }
+    .demo .demo-x { position: absolute; top: 50%; right: 8px; margin-top: -18px; color: var(--bg); }
+    .demo .demo-x:hover { background: rgba(246,241,233,.15); color: var(--bg); }
+    /*[/PILLE]*/
+    /*[DEMO]*/
+    .toast { bottom: calc(96px + env(safe-area-inset-bottom)); }
+    /*[/DEMO]*/
+    /*[PILLE]*/
+    /* Kontakt-Formular kommt auf dem Handy von unten */
+    .contact { width: 100%; max-width: 100%; margin: auto 0 0; border-radius: 24px 24px 0 0; }
+    .c-inner { padding: 28px 20px calc(24px + env(safe-area-inset-bottom)); }
+    /*[/PILLE]*/
+  }
+  @media (max-width: 760px) {
+    section { padding: 88px 0; }
+    .head { margin-bottom: 36px; }
+    .hero-content { padding: 0 24px 36px; }
+    .hero h1 { font-size: 3.8rem; }
+    .actions { margin-top: 24px; }
+    .sign { right: 20px; width: 136px; }
+    .s1 { font-size: 1.4rem; }
+    .dishes { grid-template-columns: 1fr; }
+    .dishes li span { font-size: 1.3rem; }
+    /* Reiter und Bilder nebeneinander zum Wischen */
+    .tabs { margin: 0 -24px 32px; padding: 0 24px; }
+    .gallery { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: min(66%, 270px); gap: 24px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: 24px; scrollbar-width: none; }
+    .gallery figure { scroll-snap-align: start; }
+    .gallery figure:nth-child(2) { margin-top: 0; }
+  }
+  /* Beim Ausdrucken alles zeigen */
+  @media print { .demo, .toast, .callbar, .rail, .sign { display: none; } }
+  /* Wer in den Systemeinstellungen „weniger Bewegung“ gewählt hat: nichts bewegt sich */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .rail li, .rail-cta, .hero-img, .sign, .js .panel.show { animation: none; opacity: 1; transform: none; }
+    .rail a:not(.btn), .rail li::before, .callbar, .toast, .gallery img { transition: none; }
+    .toast.show { animation: none; }
+    .gallery figure:hover img { transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<!--[PILLE]-->
+<aside class="demo" aria-label="Hinweis zu dieser Beispiel-Website">
+  <p class="demo-label">Beispiel-Website von Polywerk</p>
+  <a class="btn demo-cta" href="mailto:polywerk.business@gmail.com?subject=Website%20f%C3%BCr%20mein%20Caf%C3%A9"><span class="long">Kontakt aufnehmen</span><span class="short">Kontakt</span></a>
+  <button class="demo-x" type="button" aria-label="Hinweis schließen">×</button>
+</aside>
+<!--[/PILLE]-->
+<!--[DEMO]-->
+<div class="toast" role="status" aria-live="polite"></div>
+<!--[/DEMO]-->
+
+<header class="top">
+  <a class="brand" href="#start">{{name}}</a>
+  <nav class="rail" aria-label="Hauptmenü">
+    <button class="rail-btn btn small" type="button" aria-expanded="false">Menü</button>
+    <ul>
+      <li><a href="#start">Start</a></li>
+      <li><a href="#karte">Speisekarte</a></li>
+      <li><a href="#ueber-uns">Über uns</a></li>
+      <li><a href="#besuch">Besuch</a></li>
+    </ul>
+    <a class="btn rail-cta" href="{{maps_url}}" target="_blank" rel="noopener">Route planen</a>
+  </nav>
+</header>
+
+<main>
+<header class="hero" id="start">
+  {{hero_bild}}
+  <!-- Türschild: Text und Farbe setzt das Script unten aus den Öffnungszeiten -->
+  <a class="sign" id="status" href="#besuch">
+    <svg viewBox="0 0 156 48" aria-hidden="true"><line x1="40" y1="0" x2="78" y2="48"/><line x1="116" y1="0" x2="78" y2="48"/></svg>
+    <span class="board"><span class="s1">Öffnungszeiten</span><span class="s2">ansehen</span></span>
+  </a>
+  <div class="hero-content">
+    <h1>{{hero_h1}}</h1>
+    <div class="actions">
+      <a class="btn cream" href="#karte">Speisekarte</a>
+      <a class="btn ghost" href="{{maps_url}}" target="_blank" rel="noopener">Route planen</a>
+    </div>
+  </div>
+</header>
+
+<section id="karte"><div class="wrap">
+  <h2 class="head">{{karte_titel}}</h2>
+{{menu_html}}</div></section>
+
+{{galerie_sektion}}
+<section id="ueber-uns" class="soft"><div class="wrap about">
+  <h2>Über uns</h2>
+  <div class="story">
+    <p class="big">{{ueber_aussage}}</p>
+    <p class="text">{{ueber_text}}</p>
+  </div>
+</div></section>
+
+<section id="besuch"><div class="wrap">
+  <h2 class="head">So findest du uns</h2>
+  <div class="visit">
+    <div class="col">
+      <h3>Öffnungszeiten</h3>
+      <!-- data-days: 0 = So, 1 = Mo … 6 = Sa. Format „8:00 – 18:00“, sonst gilt der Tag als geschlossen.
+           data-closed: zusätzliche Schließtage (Feiertage, Urlaub) als JJJJ-MM-TT -->
+      <table class="hours" data-closed="{{schliesstage}}">
+{{oeffnungszeilen}}      </table>
+{{hinweis_block}}    </div>
+    <div class="col">
+      <h3>Adresse</h3>
+      <p>{{strasse}}<br>{{plz}} {{ort}}</p>
+      <!-- Link statt eingebetteter Karte: keine Cookies, kein Cookie-Banner nötig -->
+      <p><a href="{{maps_url}}" target="_blank" rel="noopener">Route planen</a></p>
+{{bewertung_block}}    </div>
+    <div class="col">
+      <h3>Kontakt</h3>
+      <p>{{kontakt_text}}</p>
+      <p><a href="tel:{{telefon_link}}">{{telefon}}</a><br><a href="mailto:{{email}}">{{email}}</a></p>
+    </div>
+  </div>
+</div></section>
+</main>
+
+<footer><div class="wrap">
+  <p class="wordmark">{{name}}</p>
+  <div class="foot">
+    <p>© {{name}}, {{strasse}}, {{plz}} {{ort}}</p>
+    <p class="foot-links"><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a>{{polywerk_link}}</p>
+  </div>
+</div></footer>
+
+<nav class="callbar" aria-label="Schnellzugriff">
+  <a href="tel:{{telefon_link}}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>Anrufen</a>
+  <a href="{{maps_url}}" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Route</a>
+</nav>
+
+<!--[PILLE]-->
+<!-- Kontakt-Formular: schickt die Nachricht über FormSubmit an polywerk.business@gmail.com – funktioniert ohne E-Mail-Programm -->
+<dialog class="contact" aria-labelledby="c-title">
+  <div class="c-inner">
+    <button class="demo-x" type="button" data-close aria-label="Schließen">×</button>
+    <form class="c-form" novalidate>
+      <p class="demo-label">Polywerk</p>
+      <h2 id="c-title">Ihre eigene Website</h2>
+      <p class="muted">Hinterlassen Sie uns Ihre Kontaktdaten, wir melden uns persönlich bei Ihnen.</p>
+      <label>Ihr Name<input name="name" autocomplete="name" required></label>
+      <label>Ihr Café<input name="cafe" autocomplete="organization" required></label>
+      <label>Telefon oder E-Mail<input name="kontakt" autocomplete="email" required></label>
+      <label><span>Nachricht <small>(optional)</small></span><textarea name="nachricht" rows="3" placeholder="z. B. Was soll auf Ihre Website?"></textarea></label>
+      <input class="hp" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <p class="c-err" role="alert" hidden></p>
+      <button class="btn c-send" type="submit">Absenden</button>
+      <p class="c-legal">Ihre Angaben gehen per E-Mail an Polywerk (über den Dienst FormSubmit) und werden nur für Ihre Anfrage genutzt. <a href="datenschutz.html#kontaktformular" target="_blank" rel="noopener">Datenschutz</a></p>
+    </form>
+    <div class="c-done" hidden>
+      <p class="demo-label">Danke!</p>
+      <h2>Nachricht ist angekommen</h2>
+      <p class="muted">Wir melden uns bald bei Ihnen.</p>
+      <button class="btn" type="button" data-close>Schließen</button>
+    </div>
+  </div>
+</dialog>
+<!--[/PILLE]-->
+
+<script>
+  // ===== Öffnungszeiten – einzige Quelle ist die Tabelle unter „Besuch“ =====
+  var table = document.querySelector('.hours');
+  var closedDays = (table.dataset.closed || '').split(/\s+/);
+  // Datum als „2026-12-24“ in Ortszeit (toISOString würde nach UTC rechnen und kann einen Tag verrutschen)
+  function iso(d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+  function hhmm(min) { return Math.floor(min / 60) + ':' + String(min % 60).padStart(2, '0'); }
+  // [von, bis] in Minuten aus einer Tabellenzeile, oder null wenn dort keine Uhrzeit steht (z. B. „Ruhetag“)
+  function rowHours(row) {
+    var m = row && row.cells[1].textContent.match(/(\d{1,2}):(\d{2})\D+(\d{1,2}):(\d{2})/);
+    return m ? [m[1] * 60 + +m[2], m[3] * 60 + +m[4]] : null;
+  }
+  function hoursOn(d) {
+    return closedDays.indexOf(iso(d)) >= 0 ? null : rowHours(table.querySelector('tr[data-days~="' + d.getDay() + '"]'));
+  }
+
+  // Türschild: „Geöffnet · bis 18:00“ bzw. „Geschlossen · morgen ab 8:00“
+  // shortcut: nutzt die Uhrzeit des Besuchers, nicht die deutsche Zeit – reicht für Gäste vor Ort.
+  (function () {
+    var now = new Date(), mins = now.getHours() * 60 + now.getMinutes(), h = hoursOn(now);
+    var sign = document.getElementById('status'), s1 = sign.querySelector('.s1'), s2 = sign.querySelector('.s2');
+    var row = table.querySelector('tr[data-days~="' + now.getDay() + '"]');
+    if (row) row.classList.add('today');
+    function show(main, sub, open) { s1.textContent = main; s2.textContent = sub; sign.classList.toggle('open', !!open); sign.classList.toggle('closed', !open); }
+    if (h && mins < h[0]) { show('Geschlossen', 'öffnet heute um ' + hhmm(h[0])); return; }
+    if (h && mins < h[1]) { show('Geöffnet', 'bis ' + hhmm(h[1]), true); return; }
+    var sub = '';
+    for (var i = 1; i <= 14; i++) {
+      var d = new Date(now.getFullYear(), now.getMonth(), now.getDate() + i), next = hoursOn(d);
+      if (!next) continue;
+      var when = i === 1 ? 'morgen' : i < 7 ? d.toLocaleDateString('de-DE', { weekday: 'long' }) : 'am ' + d.toLocaleDateString('de-DE', { day: 'numeric', month: 'numeric' });
+      sub = when + ' ab ' + hhmm(next[0]);
+      break;
+    }
+    show('Geschlossen', sub);
+  })();
+
+  // Hinweise wie „Vom 24. bis 26. Dezember geschlossen“ verschwinden nach dem Datum in data-until von selbst
+  document.querySelectorAll('[data-until]').forEach(function (el) { if (iso(new Date()) > el.dataset.until) el.hidden = true; });
+
+  // Daten für Google: Öffnungszeiten aus der Tabelle eintragen
+  (function () {
+    var el = document.getElementById('ld'), ld = JSON.parse(el.textContent);
+    var names = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    ld.openingHoursSpecification = [].map.call(table.rows, function (row) {
+      var h = rowHours(row);
+      return h && { '@type': 'OpeningHoursSpecification', dayOfWeek: row.dataset.days.split(' ').map(function (d) { return names[d]; }),
+        opens: hhmm(h[0]).padStart(5, '0'), closes: hhmm(h[1]).padStart(5, '0') };
+    }).filter(Boolean);
+    el.textContent = JSON.stringify(ld);
+  })();
+
+  // ===== Speisekarte: Reiter (Pfeiltasten wechseln); welcher Reiter zuerst offen ist, steht bei „select“ unten =====
+  (function () {
+    var tabs = [].slice.call(document.querySelectorAll('.tabs [role=tab]'));
+    function select(tab, focus) {
+      tabs.forEach(function (t) {
+        var on = t === tab, panel = document.getElementById(t.getAttribute('aria-controls'));
+        t.setAttribute('aria-selected', on);
+        t.tabIndex = on ? 0 : -1;
+        panel.hidden = !on;
+        panel.classList.toggle('show', on);
+      });
+      if (focus) tab.focus();
+    }
+    tabs.forEach(function (t, i) {
+      t.addEventListener('click', function () { select(t); });
+      t.addEventListener('keydown', function (e) {
+        var step = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
+        if (step) { e.preventDefault(); select(tabs[(i + step + tabs.length) % tabs.length], true); }
+      });
+    });
+    var now = new Date();
+    select(document.getElementById({{karte_start_js}}));
+  })();
+
+  // Seitenmenü: Handy-Aufklappmenü, Scroll-Linie, Markierung des sichtbaren Abschnitts
+  (function () {
+    var rail = document.querySelector('.rail'), btn = rail.querySelector('.rail-btn'), ul = rail.querySelector('ul');
+    function setOpen(open, refocus) {
+      rail.classList.toggle('open', open);
+      btn.setAttribute('aria-expanded', open);
+      if (open) ul.querySelector('a').focus();
+      else if (refocus) btn.focus();
+    }
+    btn.addEventListener('click', function () { setOpen(!rail.classList.contains('open'), true); });
+    document.addEventListener('click', function (e) { if (!rail.contains(e.target)) setOpen(false); });
+    addEventListener('keydown', function (e) { if (e.key === 'Escape' && rail.classList.contains('open')) setOpen(false, true); });
+
+    var links = {};
+    ul.querySelectorAll('a').forEach(function (a) {
+      links[a.hash.slice(1)] = a;
+      a.addEventListener('click', function () { setOpen(false); });
+    });
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (x) {
+          if (!x.isIntersecting) return;
+          for (var id in links) {
+            if (id === x.target.id) links[id].setAttribute('aria-current', 'true');
+            else links[id].removeAttribute('aria-current');
+          }
+        });
+      }, { rootMargin: '-40% 0px -55% 0px' });
+      for (var id in links) io.observe(document.getElementById(id));
+    }
+
+    function paint() {
+      var h = document.documentElement.scrollHeight - innerHeight;
+      ul.style.setProperty('--p', h > 0 ? Math.min(1, scrollY / h) : 0);
+    }
+    addEventListener('scroll', paint, { passive: true });
+    addEventListener('resize', paint);
+    paint();
+  })();
+
+  // Handy: Anruf-Leiste erst zeigen, wenn man an den Knöpfen oben vorbeigescrollt ist
+  (function () {
+    var actions = document.querySelector('.hero .actions');
+    if (!('IntersectionObserver' in window)) { document.body.classList.add('bar'); return; }
+    new IntersectionObserver(function (en) {
+      document.body.classList.toggle('bar', !en[0].isIntersecting && en[0].boundingClientRect.top < 0);
+    }).observe(actions);
+  })();
+
+  /*[PILLE]*/
+  // ===== Hinweis-Pille und Kontakt-Fenster (nur Demo/Vorschau) =====
+  (function () {
+    var demo = document.querySelector('.demo');
+    // Rückfall ohne JS-Formular (sehr alte Browser): fertige E-Mail an Polywerk
+    var body = 'Hallo Polywerk-Team,\r\n\r\nmir gefällt die Beispiel-Website. Ich interessiere mich für eine eigene Website für mein Café.\r\n\r\nSie erreichen mich unter: \r\n\r\nViele Grüße\r\n';
+    demo.querySelector('.demo-cta').href = 'mailto:polywerk.business@gmail.com?subject=' + encodeURIComponent('Website für mein Café') + '&body=' + encodeURIComponent(body);
+    demo.querySelector('.demo-x').addEventListener('click', function () { demo.hidden = true; });
+
+    // „Kontakt aufnehmen“ öffnet das Formular; Absenden schickt es über FormSubmit an Polywerk
+    var dlg = document.querySelector('.contact'), form = dlg.querySelector('.c-form'), thanks = dlg.querySelector('.c-done');
+    var err = dlg.querySelector('.c-err'), send = dlg.querySelector('.c-send'), field = function (n) { return form.elements.namedItem(n); };
+    function fail(text) { err.textContent = text; err.hidden = false; }
+    if (typeof dlg.showModal === 'function') {
+      demo.querySelector('.demo-cta').addEventListener('click', function (e) {
+        e.preventDefault();
+        err.hidden = true;
+        dlg.showModal();
+      });
+    }
+    dlg.addEventListener('click', function (e) { if (e.target === dlg || e.target.closest('[data-close]')) dlg.close(); }); // Klick daneben schließt
+    dlg.addEventListener('close', function () { if (!thanks.hidden) { form.reset(); form.hidden = false; thanks.hidden = true; } });
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var name = field('name').value.trim(), firma = field('cafe').value.trim(), kontakt = field('kontakt').value.trim();
+      var empty = [field('name'), field('cafe'), field('kontakt')].filter(function (f) { return !f.value.trim(); })[0];
+      if (empty) { fail('Bitte füllen Sie Name, Café und Telefon oder E-Mail aus.'); empty.focus(); return; }
+      if (!/@/.test(kontakt) && kontakt.replace(/\D/g, '').length < 6) { fail('Bitte geben Sie eine Telefonnummer oder E-Mail-Adresse an.'); field('kontakt').focus(); return; }
+      err.hidden = true; send.disabled = true; send.textContent = 'Wird gesendet …';
+      var stop = new AbortController(), timer = setTimeout(function () { stop.abort(); }, 15000);
+      fetch('https://formsubmit.co/ajax/polywerk.business@gmail.com', {
+        method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, signal: stop.signal,
+        body: JSON.stringify({ Name: name, Café: firma, Kontakt: kontakt, Nachricht: field('nachricht').value.trim(), _subject: 'Website-Anfrage: ' + firma, _template: 'table', _honey: field('_honey').value })
+      }).then(function (r) { return r.json(); }).then(function (res) {
+        if (String(res.success) !== 'true') throw new Error(res.message || '');
+        form.hidden = true; thanks.hidden = false; thanks.querySelector('button').focus();
+      }).catch(function (x) {
+        fail(/activat/i.test(x.message) ? 'Das Formular ist noch nicht aktiviert: Bitte die Aktivierungs-Mail im Postfach polywerk.business@gmail.com bestätigen.'
+          : 'Das hat leider nicht geklappt. Schreiben Sie bitte direkt an polywerk.business@gmail.com.');
+      }).finally(function () { clearTimeout(timer); send.disabled = false; send.textContent = 'Absenden'; });
+    });
+
+  })();
+  /*[/PILLE]*/
+  /*[DEMO]*/
+  // ===== Klick-Hinweise (nur Demo): Anrufen, E-Mail, Route und Bewertung zeigen „Hier könnte … stehen“ statt etwas Echtes zu öffnen =====
+  (function () {
+    var toast = document.querySelector('.toast'), timer;
+    var hints = [
+      [/^tel:/, 'Hier könnte Ihre Telefonnummer stehen.'],
+      [/^mailto:/, 'Hier könnte Ihre E-Mail-Adresse stehen.'],
+      [/g\.page\//, 'Hier könnte Ihre Google-Bewertung stehen.'],
+      [/maps\.google\./, 'Hier könnte der Weg zu Ihrem Café stehen.']
+    ];
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest('a[href]');
+      if (!a || a.closest('.demo') || /polywerk/i.test(a.href)) return;
+      for (var i = 0; i < hints.length; i++) {
+        if (!hints[i][0].test(a.getAttribute('href'))) continue;
+        e.preventDefault();
+        toast.textContent = hints[i][1];
+        toast.classList.remove('show'); void toast.offsetWidth; // bei jedem Klick die Animation neu starten
+        toast.classList.add('show');
+        clearTimeout(timer);
+        timer = setTimeout(function () { toast.classList.remove('show'); }, 3500);
+        return;
+      }
+    });
+  })();
+  /*[/DEMO]*/
+</script>
+
+</body>
+</html>

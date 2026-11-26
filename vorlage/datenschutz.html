@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Datenschutz – {{name}}</title>
+{{robots_meta_einfach}}
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='{{favicon_dunkel}}'/%3E%3Ctext x='16' y='22.5' font-family='system-ui,sans-serif' font-size='18' font-weight='600' fill='{{favicon_hell_roh}}' text-anchor='middle'%3E{{favicon_buchstabe}}%3C/text%3E%3C/svg%3E">
+<style>
+  @font-face { font-family: "Instrument Sans"; src: url("{{fonts}}instrument-sans.woff2") format("woff2"); font-weight: 400 700; font-display: swap; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: "Instrument Sans", system-ui, sans-serif; font-size: 1.0625rem; line-height: 1.6; color: #151515; background: #fff; -webkit-font-smoothing: antialiased; }
+  main { max-width: 720px; margin: 0 auto; padding: 40px 24px 96px; }
+  a { color: inherit; text-underline-offset: 4px; }
+  a:focus-visible { outline: 2px solid #151515; outline-offset: 3px; border-radius: 4px; }
+  .back { display: inline-block; margin-bottom: 56px; font-weight: 500; text-decoration: none; }
+  .back:hover { text-decoration: underline; }
+  h1 { font-size: clamp(2.4rem, 6vw, 3.5rem); font-weight: 500; letter-spacing: -.04em; line-height: 1; margin-bottom: 24px; }
+  h2 { font-size: 1.15rem; font-weight: 600; margin: 40px 0 8px; }
+  p + p { margin-top: 12px; }
+  .note { background: #f4f3f0; border-radius: 12px; padding: 14px 18px; color: #6a6a6a; font-size: .92rem; }
+</style>
+</head>
+<body>
+<main>
+  <a class="back" href="index.html">← Zurück zur Startseite</a>
+  <h1>Datenschutz</h1>
+  <!--[DEMO]-->
+  <p class="note">Beispieltext für diese Musterseite, keine Rechtsberatung. Auf einer echten Website steht hier eine vollständige Datenschutzerklärung des Betriebs.</p>
+  <!--[/DEMO]-->
+
+  <h2>Wer ist verantwortlich?</h2>
+  <p>{{name_rechtsform}}, {{inhaber}}, {{strasse}}, {{plz}} {{ort}}, <a href="mailto:{{email}}">{{email}}</a></p>
+
+  <h2>Beim Besuch der Website</h2>
+  <p>Unser Hosting-Anbieter speichert beim Aufruf technisch notwendige Daten (IP-Adresse, Uhrzeit, aufgerufene Seite, Browser) für kurze Zeit in Protokolldateien. Das ist nötig, damit die Website sicher funktioniert (Art. 6 Abs. 1 lit. f DSGVO).</p>
+  <p>{{hoster_satz}}</p>
+
+  <h2>Kontakt per E-Mail oder Telefon</h2>
+  <p>Wenn du uns anrufst oder schreibst, nutzen wir deine Angaben nur, um deine Anfrage zu beantworten (Art. 6 Abs. 1 lit. b DSGVO), und löschen sie, sobald die Anfrage erledigt ist.</p>
+
+  <!--[PILLE]-->
+  <!-- PRÜFEN vor echter Nutzung: Sitz von FormSubmit und Auftragsverarbeitung klären, ggf. Text anpassen -->
+  <h2 id="kontaktformular">Kontaktformular „Kontakt aufnehmen“</h2>
+  <p>Dieses Formular gehört nicht zum Café, sondern zu Polywerk, dem Anbieter dieser Beispiel-Website (<a href="mailto:polywerk.business@gmail.com">polywerk.business@gmail.com</a>). Verantwortlich für die Verarbeitung ist Polywerk.</p>
+  <p>Wenn du das Formular abschickst, übermitteln wir deinen Namen, den Namen deines Cafés, deine Telefonnummer oder E-Mail-Adresse und, falls du sie schreibst, deine Nachricht. Wir nutzen diese Angaben nur, um deine Anfrage zu beantworten (Art. 6 Abs. 1 lit. b DSGVO), und löschen sie, sobald die Anfrage erledigt ist.</p>
+  <p>Für den Versand nutzen wir den Dienst FormSubmit (formsubmit.co). Er nimmt die Nachricht entgegen und leitet sie per E-Mail an uns weiter. Dabei werden deine Angaben auch bei FormSubmit verarbeitet; die Server des Anbieters können sich außerhalb der EU befinden.</p>
+  <!--[/PILLE]-->
+
+  <h2>Schrift, Links und Bilder</h2>
+  <p>Die Schrift und alle Bilder liegen auf unserem eigenen Server. Es wird keine Verbindung zu Google Fonts oder zu Bilddiensten aufgebaut.</p>
+  <p>Verlinkungen wie „Route planen“ sind nur Links. Daten gehen erst an den jeweiligen Anbieter (zum Beispiel Google), wenn du sie anklickst.</p>
+
+  <h2>Deine Rechte</h2>
+  <p>Du kannst jederzeit Auskunft über deine gespeicherten Daten verlangen und sie berichtigen, löschen oder einschränken lassen. Du kannst der Verarbeitung widersprechen und dich bei einer Datenschutz-Aufsichtsbehörde beschweren.</p>
+</main>
+</body>
+</html>
