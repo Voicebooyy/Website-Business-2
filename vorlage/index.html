@@ -19,7 +19,13 @@
 {{jsonld}}
 </script>
 <!-- Merkt sich früh, dass JavaScript läuft: erst dann werden Einblend-Effekte und Reiter aktiv (ohne JS ist alles sichtbar) -->
-<script>document.documentElement.classList.add('js');</script>
+<script>
+  document.documentElement.classList.add('js');
+  // Neuladen startet immer oben (der Browser würde sich sonst die Scroll-Position merken)
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+  addEventListener('pageshow', function () { scrollTo({ top: 0, behavior: 'instant' }); });
+</script>
 <style>
   /* Schriften liegen lokal auf dem Server: kein Google-Fonts-Abruf = kein DSGVO-Problem */
   @font-face { font-family: "Instrument Sans"; src: url("{{fonts}}instrument-sans.woff2") format("woff2"); font-weight: 400 700; font-display: swap; }
@@ -131,6 +137,8 @@
   .tabs button:hover { color: var(--text); box-shadow: inset 0 0 0 1.5px var(--text); }
   .tabs button[aria-selected="true"] { background: var(--text); color: var(--bg); box-shadow: none; }
   .panel + .panel { margin-top: 56px; }
+  /* Reiterwechsel: die Höhe des Kartenbereichs gleitet, damit alles darunter (Bilder) nicht springt */
+  .panels.anim { overflow: hidden; transition: height .45s var(--ease); }
   .js .panel + .panel { margin-top: 0; }
   .panel-title { font-size: 2rem; margin-bottom: 8px; }
   .panel-title small { font-family: var(--sans); font-size: .9rem; color: var(--muted); margin-left: 8px; }
@@ -236,6 +244,10 @@
   /*[PILLE]*/
   /* Kontakt-Formular (öffnet sich über „Kontakt aufnehmen“) */
   .contact { margin: auto; width: min(460px, calc(100vw - 32px)); max-height: calc(100vh - 32px); padding: 0; border: 0; border-radius: 24px; background: var(--paper); color: var(--text); box-shadow: 0 30px 80px rgba(42,29,21,.3); }
+  /* Kontakt-Fenster offen: Seite dahinter lässt sich nicht scrollen (scrollbar-gutter: kein Ruckeln durch die verschwindende Leiste) */
+  html.lock, html.lock body { overflow: hidden; }
+  html.lock { scrollbar-gutter: stable; }
+  .contact { overscroll-behavior: contain; }
   .contact::backdrop { background: rgba(42,29,21,.5); }
   .c-inner { position: relative; padding: 32px; }
   .contact h2 { font-size: 2.3rem; margin: 8px 0 8px; }
@@ -535,7 +547,10 @@
   // ===== Speisekarte: Reiter (Pfeiltasten wechseln); welcher Reiter zuerst offen ist, steht bei „select“ unten =====
   (function () {
     var tabs = [].slice.call(document.querySelectorAll('.tabs [role=tab]'));
-    function select(tab, focus) {
+    var box = document.querySelector('.panels'), still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function select(tab, focus, glide) {
+      var from = box.offsetHeight;
+      box.style.height = '';
       tabs.forEach(function (t) {
         var on = t === tab, panel = document.getElementById(t.getAttribute('aria-controls'));
         t.setAttribute('aria-selected', on);
@@ -544,12 +559,21 @@
         panel.classList.toggle('show', on);
       });
       if (focus) tab.focus();
+      var to = box.offsetHeight;
+      if (glide && !still && from !== to) {
+        box.classList.add('anim');
+        box.style.height = from + 'px';
+        box.offsetHeight; // Startwert festschreiben, dann zum neuen Wert gleiten
+        box.style.height = to + 'px';
+        clearTimeout(box.timer);
+        box.timer = setTimeout(function () { box.style.height = ''; box.classList.remove('anim'); }, 500);
+      }
     }
     tabs.forEach(function (t, i) {
-      t.addEventListener('click', function () { select(t); });
+      t.addEventListener('click', function () { select(t, false, true); });
       t.addEventListener('keydown', function (e) {
         var step = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
-        if (step) { e.preventDefault(); select(tabs[(i + step + tabs.length) % tabs.length], true); }
+        if (step) { e.preventDefault(); select(tabs[(i + step + tabs.length) % tabs.length], true, true); }
       });
     });
     var now = berlinNow();
@@ -623,10 +647,11 @@
         e.preventDefault();
         err.hidden = true;
         dlg.showModal();
+        document.documentElement.classList.add('lock');
       });
     }
     dlg.addEventListener('click', function (e) { if (e.target === dlg || e.target.closest('[data-close]')) dlg.close(); }); // Klick daneben schließt
-    dlg.addEventListener('close', function () { if (!thanks.hidden) { form.reset(); form.hidden = false; thanks.hidden = true; } });
+    dlg.addEventListener('close', function () { document.documentElement.classList.remove('lock'); if (!thanks.hidden) { form.reset(); form.hidden = false; thanks.hidden = true; } });
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       var name = field('name').value.trim(), firma = field('cafe').value.trim(), kontakt = field('kontakt').value.trim();

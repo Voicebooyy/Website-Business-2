@@ -252,7 +252,7 @@ def baue_karte(c):
         js = f"now.getHours() < {int(start['bis_uhr'])} ? 't-{slug(start['vorher'])}' : 't-{slug(start['danach'])}'"
     else:
         js = f"'t-{ids[0]}'"
-    return tabs + panels, js
+    return tabs + '  <div class="panels">\n' + panels + "  </div>\n", js
 
 
 def baue_oeffnungszeiten(c):

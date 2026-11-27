@@ -78,11 +78,6 @@
   },
   "karte": {
     "titel": "Unsere Lieblinge",
-    "start": {
-      "bis_uhr": 14,
-      "vorher": "Frühstück",
-      "danach": "Kuchen"
-    },
     "kategorien": [
       {
         "titel": "Frühstück",

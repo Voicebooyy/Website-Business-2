@@ -53,7 +53,7 @@ Titelbild: möglichst hell, ab 1600 px Breite, unten links ruhig (dort steht die
 | `hero_woerter` | 2 bis 4 Wörter für die große Überschrift („Frühstück. Kuchen. Kaffee.“). |
 | `oeffnungszeiten` | Zeilen mit `tage` (Anzeige), `tage_nr` (0 = So … 6 = Sa) und `zeiten` (Format `8:00 – 18:00` oder `Ruhetag`; mit Mittagspause `8:00 – 12:00, 14:00 – 18:00`; nach Mitternacht `17:00 – 1:00`). Das Türschild „Geöffnet/Geschlossen“ richtet sich automatisch danach und rechnet immer mit deutscher Zeit. |
 | `schliesstage`, `hinweis` | Feiertage/Urlaub (`JJJJ-MM-TT`); ein Hinweis verschwindet nach seinem Datum (`bis`) von selbst. |
-| `karte.kategorien` | Teile der Speisekarte mit Gerichten (`name`, `preis`, `beschreibung`, optional `schild`). `karte.start` bestimmt optional, welcher Reiter zu welcher Uhrzeit zuerst offen ist. |
+| `karte.kategorien` | Teile der Speisekarte mit Gerichten (`name`, `preis`, `beschreibung`, optional `schild`). `karte.start` bestimmt optional, welcher Reiter zu welcher Uhrzeit zuerst offen ist (ohne Angabe startet immer der erste Reiter, so auch die Demo). |
 | `ueber_uns` | `aussage` (ein Satz) und `text`. |
 | `bewertungslink` | Link aus dem Google-Unternehmensprofil, leer lassen = Block entfällt. |
 | `bewertungen` | **Optional.** Block „Das sagen unsere Gäste“ mit `durchschnitt`, `anzahl` und 1 bis 3 `eintraege` (`name`, `sterne` 1–5, `text`, optional `wann`). Dazu optional `bewertungslink_profil` für „Alle Bewertungen auf Google“. **Bei echten Cafés nur Bewertungen eintragen, die wörtlich im Google-Profil stehen**, nichts erfinden. Eintrag löschen und neu bauen = Bereich samt Menüpunkt restlos weg. |
@@ -71,4 +71,4 @@ Das Skript bricht bei fehlenden Pflichtfeldern mit einer verständlichen Meldung
 
 ## Test
 
-`node tests/tuerschild.test.js` prüft Türschild, Urlaubshinweis und Events (Mittagspause, nach Mitternacht, Feiertage, drei Zeitzonen). Braucht Playwright. Das Skript selbst hat einen eingebauten Selbsttest, der bei jedem Bauen läuft.
+`node tests/tuerschild.test.js` prüft Türschild, Urlaubshinweis und Events (Mittagspause, nach Mitternacht, Feiertage, drei Zeitzonen). `node tests/verhalten.test.js` prüft Start oben beim Neuladen, Reiter-Start, das Gleiten der Galerie und die Scroll-Sperre hinter dem Kontakt-Fenster. Braucht Playwright. Das Skript selbst hat einen eingebauten Selbsttest, der bei jedem Bauen läuft.
