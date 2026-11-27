@@ -51,11 +51,12 @@ Titelbild: möglichst hell, ab 1600 px Breite, unten links ruhig (dort steht die
 |---|---|
 | `name`, `strasse`, `plz`, `ort`, `telefon`, `email` | Stammdaten, erscheinen überall (Seite, Impressum, Google-Daten). |
 | `hero_woerter` | 2 bis 4 Wörter für die große Überschrift („Frühstück. Kuchen. Kaffee.“). |
-| `oeffnungszeiten` | Zeilen mit `tage` (Anzeige), `tage_nr` (0 = So … 6 = Sa) und `zeiten` (Format `8:00 – 18:00` oder `Ruhetag`). Das Türschild „Geöffnet/Geschlossen“ richtet sich automatisch danach. |
+| `oeffnungszeiten` | Zeilen mit `tage` (Anzeige), `tage_nr` (0 = So … 6 = Sa) und `zeiten` (Format `8:00 – 18:00` oder `Ruhetag`; mit Mittagspause `8:00 – 12:00, 14:00 – 18:00`; nach Mitternacht `17:00 – 1:00`). Das Türschild „Geöffnet/Geschlossen“ richtet sich automatisch danach und rechnet immer mit deutscher Zeit. |
 | `schliesstage`, `hinweis` | Feiertage/Urlaub (`JJJJ-MM-TT`); ein Hinweis verschwindet nach seinem Datum (`bis`) von selbst. |
 | `karte.kategorien` | Teile der Speisekarte mit Gerichten (`name`, `preis`, `beschreibung`, optional `schild`). `karte.start` bestimmt optional, welcher Reiter zu welcher Uhrzeit zuerst offen ist. |
 | `ueber_uns` | `aussage` (ein Satz) und `text`. |
 | `bewertungslink` | Link aus dem Google-Unternehmensprofil, leer lassen = Block entfällt. |
+| `bewertungen` | **Optional.** Block „Das sagen unsere Gäste“ mit `durchschnitt`, `anzahl` und 1 bis 3 `eintraege` (`name`, `sterne` 1–5, `text`, optional `wann`). Dazu optional `bewertungslink_profil` für „Alle Bewertungen auf Google“. **Bei echten Cafés nur Bewertungen eintragen, die wörtlich im Google-Profil stehen**, nichts erfinden. Eintrag löschen und neu bauen = Bereich samt Menüpunkt restlos weg. |
 | `inhaber`, `rechtsform`, `ust_id`, `hoster` | Für Impressum und Datenschutz (Vorlagen, bitte prüfen lassen). |
 | `webadresse` | Endgültige Adresse der Seite, nötig für die Bildvorschau beim Teilen. |
 | `farben` | Optional: eigene Farben (`bg`, `paper`, `soft`, `text`, `muted`, `line`, `akzent`, `akzent_hell`). Das Skript prüft die Lesbarkeit. |
@@ -67,3 +68,7 @@ Das Skript bricht bei fehlenden Pflichtfeldern mit einer verständlichen Meldung
 ## Übergabe an den Kunden
 
 `--modus fertig` erzeugt `ausgabe/<name>/` und `ausgabe/<name>.zip` (Dateien direkt im Zip-Stamm) mit einer `LIESMICH-UEBERGABE.txt`, die jeder Webspace-Support ohne Rückfrage umsetzen kann. Danach hat der Kunde alles, und es gibt nichts weiter zu betreiben.
+
+## Test
+
+`node tests/tuerschild.test.js` prüft Türschild, Urlaubshinweis und Events (Mittagspause, nach Mitternacht, Feiertage, drei Zeitzonen). Braucht Playwright. Das Skript selbst hat einen eingebauten Selbsttest, der bei jedem Bauen läuft.

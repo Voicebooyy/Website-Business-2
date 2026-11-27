@@ -76,7 +76,7 @@ def kontrast(f1, f2):
 def filtere(text, behalte):
     """Entfernt die Blöcke <!--[NAME]-->…<!--[/NAME]--> (bzw. /*[NAME]*/…) für Marker, die NICHT in `behalte` sind;
     bei behaltenen Markern werden nur die Markierungszeilen entfernt."""
-    for name in ("PILLE", "DEMO", "EVENTS"):
+    for name in ("PILLE", "DEMO", "EVENTS", "BEWERTUNGEN"):
         block = re.compile(
             r"^[ \t]*(?:<!--|/\*)\[%s\](?:-->|\*/)[ \t]*\n(.*?)^[ \t]*(?:<!--|/\*)\[/%s\](?:-->|\*/)[ \t]*\n" % (name, name),
             re.S | re.M)
@@ -290,6 +290,29 @@ def baue_events(c):
             f'  <ul class="events">\n{liste}  </ul>\n</div></section>\n')
 
 
+def baue_bewertungen(c):
+    """Optionaler Bewertungs-Bereich (Durchschnitt + bis zu 3 Karten). Ohne Eintrag `bewertungen` entfällt er samt Menüpunkt.
+    Bei echten Cafés nur Bewertungen eintragen, die wörtlich im Google-Profil stehen."""
+    b = c.get("bewertungen")
+    if not b:
+        return ""
+    def sterne(n):
+        n = int(round(float(n)))
+        return f'<div class="stars" role="img" aria-label="{n} von 5 Sternen">' + "★" * n + '<span class="off">' + "★" * (5 - n) + "</span></div>"
+    karten = ""
+    for e in b["eintraege"]:
+        wann = f"<span>{t(e['wann'])}</span>" if e.get("wann") else ""
+        karten += (f'    <figure>\n      {sterne(e["sterne"])}\n      <blockquote>„{t(e["text"])}“</blockquote>\n'
+                   f'      <figcaption>{t(e["name"])} {wann}</figcaption>\n    </figure>\n')
+    note = str(b["durchschnitt"]).replace(".", ",")
+    link = (f'  <a class="reviews-more" href="{a(c["bewertungslink_profil"])}" target="_blank" rel="noopener">Alle Bewertungen auf Google →</a>\n'
+            if c.get("bewertungslink_profil") else "")
+    return (f'<section id="bewertungen"><div class="wrap">\n  <h2 class="head">{t(b.get("titel", "Das sagen unsere Gäste"))}</h2>\n'
+            f'  <div class="rating"><span class="rating-num">{t(note)}</span><div>{sterne(float(b["durchschnitt"]))}'
+            f'<p>{t(str(b["anzahl"]))} Bewertungen auf Google</p></div></div>\n'
+            f'  <div class="reviews">\n{karten}  </div>\n{link}</div></section>\n')
+
+
 def baue_jsonld(c, telefon_link):
     d = {"@context": "https://schema.org", "@type": "CafeOrCoffeeShop", "name": c["name"], "telephone": telefon_link, "email": c["email"],
          "address": {"@type": "PostalAddress", "streetAddress": c["strasse"], "postalCode": c["plz"], "addressLocality": c["ort"], "addressCountry": "DE"},
@@ -322,6 +345,15 @@ def pruefe_daten(c, modus):
                 raise ValueError
         except ValueError:
             raise SystemExit(f"Event „{e['titel']}“: ungültiges Datum oder ungültiger Wochentag.")
+    b = c.get("bewertungen")
+    if b:
+        if not b.get("eintraege") or len(b["eintraege"]) > 3:
+            raise SystemExit("bewertungen.eintraege: 1 bis 3 Bewertungen angeben.")
+        for e in b["eintraege"]:
+            if not all(e.get(k) for k in ("name", "text", "sterne")) or not 1 <= float(e["sterne"]) <= 5:
+                raise SystemExit("Jede Bewertung braucht name, text und sterne (1 bis 5).")
+        if not b.get("durchschnitt") or not b.get("anzahl"):
+            raise SystemExit("bewertungen: durchschnitt und anzahl fehlen.")
     if len(c["hero_woerter"]) > 4:
         raise SystemExit("hero_woerter: höchstens 4 Wörter – der erste Eindruck soll kurz bleiben.")
 
@@ -333,6 +365,8 @@ def sammle_warnungen(c, modus):
         for pfad, wert in durchlaufe(c):
             if verdacht.search(str(wert)) and pfad not in ("_hinweis",):
                 w.append(f"Sieht nach Beispielwert aus: {pfad} = „{wert}“")
+    if modus != "demo" and c.get("bewertungen"):
+        w.append("Bewertungen: nur echte Texte aus dem Google-Profil des Cafés, wörtlich übernommen. Nichts erfinden oder umschreiben.")
     if modus == "fertig":
         if not c.get("inhaber"):
             w.append("Für das Impressum fehlt „inhaber“ (z. B. „Inhaber: Max Mustermann“).")
@@ -365,7 +399,7 @@ def durchlaufe(obj, pfad=""):
 
 # ---------------------------------------------------------------- Bauen
 def baue(c, modus, json_ordner, ausgabe):
-    behalte = {"demo": {"PILLE", "DEMO"}, "vorschau": {"PILLE"}, "fertig": set()}[modus] | ({"EVENTS"} if c.get("events") else set())
+    behalte = {"demo": {"PILLE", "DEMO"}, "vorschau": {"PILLE"}, "fertig": set()}[modus] | ({"EVENTS"} if c.get("events") else set()) | ({"BEWERTUNGEN"} if c.get("bewertungen") else set())
     meldungen = []
     info = verarbeite_fotos(c, json_ordner, ausgabe / "bilder" if modus != "demo" else HIER / "bilder", meldungen)
 
@@ -415,7 +449,7 @@ def baue(c, modus, json_ordner, ausgabe):
         "strasse": t(c["strasse"]), "plz": t(c["plz"]), "ort": t(c["ort"]), "telefon": t(c["telefon"]), "telefon_link": tl, "email": t(c["email"]),
         "maps_url": maps, "hero_bild": baue_hero_bild(c, info), "hero_h1": "<br>".join(t(w) + "." for w in c["hero_woerter"]),
         "karte_titel": t(c["karte"].get("titel", "Unsere Lieblinge")), "menu_html": karte_html, "karte_start_js": karte_js,
-        "galerie_sektion": baue_galerie(c, info), "events_sektion": baue_events(c), "ueber_aussage": t(c["ueber_uns"]["aussage"]), "ueber_text": t(c["ueber_uns"]["text"]),
+        "galerie_sektion": baue_galerie(c, info), "events_sektion": baue_events(c), "bewertungen_sektion": baue_bewertungen(c), "ueber_aussage": t(c["ueber_uns"]["aussage"]), "ueber_text": t(c["ueber_uns"]["text"]),
         "oeffnungszeilen": baue_oeffnungszeiten(c), "schliesstage": " ".join(c.get("schliesstage", [])),
         "hinweis_block": hinweis_html, "bewertung_block": bewertung_html,
         "kontakt_text": t(c.get("kontakt_text", "Fragen, Feiern oder Kuchen vorbestellen? Ruf kurz an oder schreib uns.")),
@@ -451,6 +485,9 @@ def selbsttest():
     assert fuelle("x {{a}} y", {"a": "1"}) == "x 1 y"
     assert filtere("a\n<!--[EVENTS]-->\nb\n<!--[/EVENTS]-->\nc\n", set()) == "a\nc\n"
     ev = baue_events({"events": {"eintraege": [{"datum": "2026-12-06", "zeit": "10:00 – 14:00", "titel": "X"}, {"wochentag": 4, "titel": "Y"}]}})
+    rv = baue_bewertungen({"bewertungen": {"durchschnitt": 4.8, "anzahl": 214, "eintraege": [{"name": "A. B.", "sterne": 4, "text": "Gut"}]}})
+    assert "4,8" in rv and "214 Bewertungen" in rv and "„Gut“" in rv and 'aria-label="4 von 5 Sternen"' in rv
+    assert filtere("a\n<!--[BEWERTUNGEN]-->\nb\n<!--[/BEWERTUNGEN]-->\nc\n", set()) == "a\nc\n"
     assert "Sonntag, 10:00 – 14:00 Uhr" in ev and "Jeden Donnerstag" in ev and "<b>06</b><span>Dez</span>" in ev and "<b>Do</b>" in ev
 
 

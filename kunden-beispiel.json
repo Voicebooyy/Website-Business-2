@@ -290,5 +290,30 @@
         "text": "Ein letztes Frühstück im alten Jahr, mit einem Glas Sekt zum Anstoßen."
       }
     ]
+  },
+  "bewertungslink_profil": "https://www.google.com/maps/search/?api=1&query=Muster-Caf%C3%A9+Musterstadt",
+  "bewertungen": {
+    "durchschnitt": 4.8,
+    "anzahl": 214,
+    "eintraege": [
+      {
+        "name": "Lena M.",
+        "sterne": 5,
+        "text": "Bester Käsekuchen weit und breit! Wir kommen jedes Wochenende zum Frühstück und werden immer total herzlich empfangen.",
+        "wann": "vor 2 Wochen"
+      },
+      {
+        "name": "Thomas K.",
+        "sterne": 5,
+        "text": "Gemütlich, hell und der Cappuccino ist richtig gut. Das große Frühstück reicht locker bis zum Nachmittag.",
+        "wann": "vor 1 Monat"
+      },
+      {
+        "name": "Sabine W.",
+        "sterne": 4,
+        "text": "Sehr leckere Kuchen und netter Service. Am Sonntag wird es voll, also lieber vorher anrufen und reservieren.",
+        "wann": "vor 1 Monat"
+      }
+    ]
   }
 }
